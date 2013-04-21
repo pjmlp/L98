@@ -4,7 +4,7 @@
 
 # Overview
 
-Was this compiler was developed during the compiler design course, it needed to be cleaned up in a few spots before making it available on GitHub, namely:
+This compiler was developed during the compiler design course, it needed to be cleaned up in a few spots before making it available on GitHub, namely:
 
 - translation of code comments into English;
 - conversion of the build procedure into a Maven build file;
