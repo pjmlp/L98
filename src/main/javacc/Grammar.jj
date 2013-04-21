@@ -1,0 +1,354 @@
+/* Grammar.jj : L98 grammar description file.
+ * Copyright (C) 1999  Paulo Pinto, Pablo Tavares
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+options {
+ LOOKAHEAD=1;
+}
+
+PARSER_BEGIN(Parser)
+package org.progtools.l98;
+
+import java.io.InputStream;
+import org.progtools.l98.ast.*;
+import org.progtools.l98.type.*;
+import org.progtools.l98.CompilerError;
+import org.progtools.l98.util.Pair;
+
+/**
+ * Class representing the L98 parser
+ */
+public class Parser {
+  private static CompilerError m_error = null;
+
+  public void setCompilerError (CompilerError err) {
+    m_error = err;
+  }
+}
+
+PARSER_END(Parser)
+
+/*
+ * Don't care about whitespace characters
+ */
+SKIP :
+{
+ 	" "
+|	"\r"
+|	"\t"
+|   "\n"
+}
+
+// Comments
+SKIP :
+{
+  "/*" : InComments
+}
+
+<InComments> MORE :
+{
+  "*/" : DEFAULT
+}
+
+<InComments> MORE :
+{
+  <~[]>
+}
+
+// Operators and keywords
+TOKEN :
+{
+	< LESS:             "<"      >
+|	< GREATER:          ">"      >
+|	< LESS_OR_EQUAL:    "<="     >
+|	< GREATER_OR_EQUAL: ">="     >
+|   < EQUAL:            "="      >
+|   < NOT_EQUAL:        "!="     >
+|	< PLUS:             "+"      >
+|	< MINUS:            "-"      >
+|	< MULTIPLY:         "*"      >
+|	< DIVIDE:           "/"      >
+|   < ASSIGN:           ":="     >
+|   < LPAREN:           "("      >
+|   < RPAREN:           ")"      >
+|   < LBRACE:           "["      >
+|   < RBRACE:           "]"      >
+|   < SEMI:             ";"      >
+|   < COLON:            ":"      >
+|   < COMMA:            ","      >
+|   < LET:              "let"    >
+|   < IN:               "in"     >
+|	< END:              "end"    >
+|	< IF:               "if"     >
+|	< THEN:             "then"   >
+|	< ELSE:             "else"   >
+|	< WHILE:            "while"  >
+|	< DO:               "do"     >
+|	< AND:              "and"    >
+|	< OR:               "or"     >
+|	< NOT:              "not"    >
+|	< BOOL:             "bool"   >
+|	< INT:              "int"    >
+|	< TRUE:             "true"   >
+|       < FALSE:            "false"  >
+|       < VAR:              "var"    >
+|       < VAL:              "val"    >
+|       < FUN:              "fun"    >
+|       < PROC:             "proc"   >
+|       < RETURN:           "return" >
+|       < FOR:              "for"    >
+|       < UPTO:             "upto"   >
+|       < DOWNTO:           "downto" >
+}
+
+/* Integer constants */
+TOKEN :
+{
+    < CONSTANT: ( <DIGIT> )+ >
+|   < #DIGIT: ["0" - "9"] >
+}
+
+/* Identifiers */
+TOKEN :
+{
+    < IDENTIFIER: <LETTER> ( <LETTER> | <DIGIT> )* >
+|   < #LETTER: ["A" - "Z", "a" - "z"] >
+}
+
+/* Grammar starting point */
+ASTStat start() :
+{ASTStat node = null;}
+{
+  try {
+    node = statList() <EOF> 
+  }
+  catch (ParseException e) {
+    Token token = e.currentToken.next;
+    m_error.message (token.beginLine + ": Syntax error: Simbol " + token.image + " unexpected");
+  }
+
+  { return node; }
+}
+
+
+/* statements list */
+ASTStat statList () :
+{
+ ASTStatList sl = new ASTStatList (0);
+ ASTStat s = null;
+}
+{
+  s = statement () {sl.add (s);} (<SEMI> s = statement () {sl.add (s);} )* {return sl;}
+}
+
+/* available statements */
+ASTStat statement () :
+{
+ Token t;
+ ASTExp e, e1, e2;
+ ASTStat stat1, stat2 = null;
+ Pair p;
+ ASTElementList el;
+ boolean direction; // direction used by the for statement, true -> upto, false -> downto
+}
+{
+  t = <LET>  p = declList ()  <IN> stat1 = statList () <END> 
+  {return new ASTLet (t.beginLine, (ASTDeclList) p.getLeft (), (ASTDeclList) p.getRight (), stat1);}
+
+| <LPAREN> stat1 = statList () <RPAREN> {return stat1;}
+
+| t = <IDENTIFIER> (<ASSIGN> e = exp () {return new ASTAssign (t.beginLine, t.image, e);}
+                   |<LPAREN> el = elementList() <RPAREN> {return new ASTProcCall (t.beginLine, t.image,  el);}
+		   )
+
+| t = <IF> e = exp () <THEN> stat1 = statement () [LOOKAHEAD(<ELSE>) <ELSE> stat2 = statement ()] 
+                                                       { return new ASTIf (t.beginLine, e, stat1, stat2);}
+
+| t = <WHILE> e = exp () <DO> stat1 = statement () {return new ASTWhile (t.beginLine, e, stat1);}
+
+| t = <RETURN> e = exp () {return new ASTReturn (t.beginLine, e);}
+
+| <FOR> t = <IDENTIFIER> <EQUAL> e1 = exp () (<UPTO> e2  = exp () {direction = true;}
+                                             |<DOWNTO> e2  = exp () {direction = false;}
+			                     ) <DO> stat1 = statement () { return new ASTFor (t.beginLine, t.image, e1, e2, direction, stat1); }				      
+
+}
+
+/* variable declarations */
+Pair declList () :
+{
+  ASTDeclList dlVarVal = new ASTDeclList (0);
+  ASTDeclList dlFunProc = new ASTDeclList (0);  
+  ASTDecl d;
+}
+{
+  (LOOKAHEAD (3) (d = declVarVal () { dlVarVal.add (d); } )+ (d = declFunProc () { dlFunProc.add (d); })*
+  |(d = declVarVal () { dlVarVal.add (d); } )* (d = declFunProc () { dlFunProc.add (d); })+
+  )
+  
+  {return new Pair (dlVarVal, dlFunProc); }
+}
+
+/* Constants and variable declarations */
+ASTDecl declVarVal () :
+{
+ Token t;
+ Type ty;
+ ASTExp e;
+}
+{
+  <VAL> t = <IDENTIFIER> <COLON> ty = type ()  <EQUAL> e = exp () 
+    {return new ASTDeclVal (t.beginLine, t.image, ty, e);}
+| <VAR> t = <IDENTIFIER> <COLON> ty = type () <ASSIGN> e = exp ()
+    {return new ASTDeclVar (t.beginLine, t.image, ty, e);}
+}
+
+/* Procedure and functions declarations */
+ASTDecl declFunProc () :
+{
+ Token t;
+ Type ty;
+ ASTStat stat;
+ ASTArgList args;
+}
+{
+  <FUN> t = <IDENTIFIER> <LPAREN> args = argList() <RPAREN> <COLON> ty = type ()  <EQUAL> stat = statement ()
+    {return new ASTDeclFunc (t.beginLine, t.image, args, ty, stat);}
+| <PROC> t = <IDENTIFIER> <LPAREN> args = argList() <RPAREN> <EQUAL> stat = statement ()
+    {return new ASTDeclProc (t.beginLine, t.image, args, stat);}
+}
+
+/* Data types */
+Type type () :
+{
+  Token t;
+  Type ty;
+}
+{
+  <INT> {return new TypeInt ();}
+| <BOOL> {return new TypeBool ();}
+}
+
+
+/* Expression */
+ASTExp exp () :
+{
+ Token t;
+ ASTExp left, right;
+}
+{
+    left = arithExp() [ t = <LESS> right = arithExp() {left = new ASTLess (t.beginLine, left, right);}
+                      | t = <LESS_OR_EQUAL> right = arithExp() {left =new ASTLessOrEqual (t.beginLine, left,right);}
+                      | t = <GREATER> right = arithExp() {left = new ASTGreater (t.beginLine, left, right);}
+                      | t = <GREATER_OR_EQUAL> right = arithExp() {left = new ASTGreaterOrEqual (t.beginLine, left, right);}
+                      | t = <EQUAL> right = arithExp() {left = new ASTEqual (t.beginLine, left, right);}
+                      | t = <NOT_EQUAL> right = arithExp() {left = new ASTNotEqual(t.beginLine, left, right);}
+		      ]
+    {return left;}
+}
+
+/* Additive Expressions */
+ASTExp arithExp() :
+{
+ Token t;
+ ASTExp left, right;
+}
+{
+    left = term() ( t = <PLUS> right = term() {left = new ASTAdd (t.beginLine, left, right);}
+                  | t = <MINUS> right = term() {left = new ASTMinus (t.beginLine, left, right);}
+                  | t = <OR> right = term() {left = new ASTOr (t.beginLine, left, right);}
+		  )*
+    {return left;}
+}
+
+/* Multiplicative expressions */
+ASTExp term() :
+{
+ Token t;
+ ASTExp left, right;
+}
+{
+    left = unary() ( t = <MULTIPLY> right = unary() {left = new ASTMult (t.beginLine, left, right);}
+                   | t = <DIVIDE>   right = unary() {left = new ASTDiv (t.beginLine, left, right);}
+                   | t = <AND>   right = unary() {left = new ASTAnd (t.beginLine, left, right);}
+		   )*
+    {return left;}
+}
+
+/* Single expressions */
+ASTExp unary() :
+{Token t;
+ ASTExp node;
+}
+{
+      t = <MINUS> node = element() {return new ASTUMinus (t.beginLine, node);}
+    | t = <NOT>   node = element() {return new ASTNot (t.beginLine, node);}
+    |             node = element() {return node;}
+}
+
+/* Simple elements used in the expressions */
+ASTExp element() :
+{ASTExp node, node2;
+ Token t;
+ ASTElementList el;
+}
+{
+    t = <CONSTANT> {return new ASTIntConst (t.beginLine, Integer.parseInt(t.image));}
+|   <LPAREN> node = exp() <RPAREN> {return node;}
+|   t = <TRUE> {return new ASTBoolConst (t.beginLine, true);}
+|   t = <FALSE>  {return new ASTBoolConst (t.beginLine, false);}
+|   t = <IDENTIFIER> (<LPAREN> el = elementList () <RPAREN> {return new ASTFuncCall(t.beginLine, t.image,el);}
+                     | {return new ASTId(t.beginLine, t.image);}
+		     )
+}
+
+/* Expression list */
+ASTElementList elementList () :
+{
+ ASTExp e;
+ ASTElementList el = new ASTElementList ();
+}
+{
+    [ e= exp() {el.add (e);}(<COMMA> e = exp() {el.add (e);})*] {return el;}
+
+}
+
+/* Arguments used in functions and procedures */
+ASTArg arg () :
+{
+ ASTArg a;
+ Type ty;
+ Token t;
+}
+{
+  <VAL> t = <IDENTIFIER> <COLON> ty = type ()
+    {return new ASTArgVal (t.beginLine, t.image, ty);}
+| <VAR> t = <IDENTIFIER> <COLON> ty = type ()
+    {return new ASTArgVar (t.beginLine, t.image, ty);}
+
+}
+
+/* Argument list */
+ASTArgList argList () :
+{
+ ASTArg a;
+ ASTArgList al = new ASTArgList ();
+}
+{
+    [ a= arg() {al.add (a);}(<COMMA> a = arg() {al.add (a);})*] {return al;}
+
+}

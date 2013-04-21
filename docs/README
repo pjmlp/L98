@@ -1,0 +1,9 @@
+ Use the makefile to generate this documentation. The possible
+arguments are :
+
+  make ps -> To build the Postscript documentation format
+
+  make pdf -> To build the PDF documentation format
+
+  make
+  make all -> Build both documentation formats

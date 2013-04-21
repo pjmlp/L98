@@ -1,0 +1,54 @@
+/* proccall.l98 : tests the procedure calls.
+ * Copyright (C) 1999  Paulo Pinto, Pablo Tavares
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+ let
+   val a : int = 5
+   val b : int = 6
+   var c : bool := false
+   var i : int  := 0
+   
+   proc p1 () = c := a > b
+   
+   proc p2 (val w : int) = if w = a then c := true
+   
+   proc p3 (val init : int) = let
+                                var i : int := init
+		              in
+		                while i <= b do
+		                 i := i + 2
+		              end
+			      
+   proc p4 (val w : int, var c : bool) = c := w / 2 = 0
+   
+   /* Factorial implememented as a procedure */
+   proc p5 (val v : int, var r : int) = if v = 0 then 
+                                          r := 1 
+					else (
+					  p5 (v - 1, r);
+					  r := r * v
+					)
+   
+in
+  p1 ();
+  p2 (a);
+  p3 (50);
+  p4 (b, c);
+  p5 (6, i);
+  printint (i);
+  println ()
+end

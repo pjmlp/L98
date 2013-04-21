@@ -1,0 +1,443 @@
+/* X86CodeGenerator.java : Generates textual version of x86 Assembly for Linux
+ * Copyright (C) 2013  Paulo Pinto
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+package org.progtools.l98.generator;
+import java.io.*;
+
+/**
+ *  Code generator for 32 bit x86 code in Assembly format compatible with Gas from
+ * GNU binutils for Linux systems.
+ */
+public class X86CodeGenerator implements CodeGenerator, Closeable {
+   /**
+    * Output source for the Assembly code.
+    */
+   private PrettyWritter m_out;
+   
+   /**
+    * @param out Where to write the text representation of the Assembly code.
+    * @param indent Desired identantion level when no labels are used.
+    */
+   public X86CodeGenerator (OutputStream out, int indent) {
+       m_out = new PrettyWritter (out, indent, PrettyWritter.CommentFormat.UNIX);
+   }
+   
+   /**
+    * Call to perform the required cleanup.
+    */
+    @Override
+  public void close () throws IOException {
+      m_out.close ();
+  }
+  
+   //---- Memory instructions
+   
+
+    @Override
+   public void load (int value) throws IOException {
+      
+      commentf ("LOAD %d", value);
+      m_out.writeInstruction ("movl $%d, %%eax ", value);
+      m_out.writeInstruction ("push %%eax");
+   }
+   
+    @Override
+   public void loadVar (int level, int offset) throws IOException {
+      m_out.writeComment("LOADVAR " + level + ", " + offset); 
+      staticLink(level);
+      if (offset < 0) {
+          m_out.writeInstruction ("movl %d(%%ebx), %%eax", (offset - 1) * 4);
+      } else {
+          m_out.writeInstruction ("movl %d(%%ebx), %%eax", (offset + 1) * 4);
+      }
+      m_out.writeInstruction ("pushl %%eax");
+   }
+
+    @Override
+   public void storeVar (int level, int offset) throws IOException {
+      
+      m_out.writeComment(String.format("STOREVAR %d, %d", level, offset)); 
+      m_out.writeInstruction ("popl %%eax "); 
+      staticLink(level);
+      if (offset < 0) {
+          m_out.writeInstruction ("movl %%eax, %d(%%ebx)", (offset - 1) * 4);
+      } else {
+          m_out.writeInstruction ("movl %%eax, %d(%%ebx)", (offset + 1) * 4);
+      }
+   }
+   
+
+    @Override
+   public void loadGlobal (int offset) throws IOException {
+      commentf("LOADGLOBAL %d", offset);
+      m_out.writeInstruction ("movl $%d, %%ebx", offset); 
+      m_out.writeInstruction ("movl  $%d, %%esi", offset); 
+      m_out.writeInstruction ("movl  globals(, %%esi, 4), %%eax"); 
+      m_out.writeInstruction ("pushl %%eax"); 
+   }
+
+
+   @Override
+   public void storeGlobal (int offset) throws IOException {
+      commentf("STOREGLOBAL %d", offset);
+      m_out.writeInstruction ("popl %%eax");
+      m_out.writeInstruction ("movl  $%d, %%esi", offset); 
+      m_out.writeInstruction ("movl %%eax, globals(, %%esi, 4)");
+   }
+
+   /**
+    *  Empilha o endere�o da posi�ao de mem�ria que se
+    * encontra level n�veis acima do registo de activa�ao corrente.
+    * @param level Numero de n�veis
+    * @param offset Deslocamento dentro do frame.
+    */
+    @Override
+   public void loadVarA (int level, int offset) throws IOException {
+      
+      m_out.writeInstruction ("LOADVARA " + level + ", " + offset); 
+   }
+
+   /**
+    *  Empilha o endere�o daposi�ao de mem�ria.
+    * @param offset Deslocamento a partir da base da pilha.
+    */
+    @Override
+   public void loadGlobalA (int offset) throws IOException {
+      
+      commentf("LOADGLOBALA %d", offset);
+      m_out.writeInstruction("lea	eax, [globals+4*%d]", offset); 
+      m_out.writeInstruction ("push 	eax"); 
+   }
+
+    @Override
+   public void loadInd () throws IOException {
+      comment("LOADIND");
+      m_out.writeInstruction ("popl %%eax"); 
+      m_out.writeInstruction ("pushl (%%eax)"); 
+   }
+        
+    @Override
+   public void storeInd () throws IOException {
+      comment("STOREIND");
+      m_out.writeInstruction ("popl %%ebx"); 
+      m_out.writeInstruction ("popl %%eax"); 
+      m_out.writeInstruction ("movl %%eax, (%%ebx)"); 
+   }
+   
+    @Override
+   public void alloc (int size) throws IOException {
+      commentf("ALLOC %d", size);
+      m_out.writeInstruction("subl $%d, %%esp", (size * 4)); 
+   }
+   
+   /* Controle */
+
+    /**
+    * Desempilha um valor v do topo da pilha, se for igual a value
+    * salta para label, caso contr�rio continua a execuca�ao normalmente
+    * @param value Valor da compara�ao.
+    * @param label Etiqueta de destino.
+    */
+    @Override
+   public void jpc (int value, String label) throws IOException {
+      m_out.writeComment("JPC " + value + ", " + label);
+      m_out.writeInstruction("popl %%eax"); 
+      m_out.writeInstruction("cmp $%d, %%eax", value); 
+      m_out.writeInstruction("jne 1f"); 
+      m_out.writeInstruction("jmp %s", label); 
+      m_out.writeLabel("1");
+   }
+ 
+
+    @Override
+   public void jmp (String label) throws IOException {
+      commentf("JMP %s", label);
+      m_out.writeInstruction("jmp  %s", label); 
+   }
+    
+   /**
+    * Invoca uma subrotina que se encontra definida na etiqueta label.
+    * @param entry Ponto de entrada. 
+    *              entry = -1 -> A fun�ao destino est� num n�vel inferior
+    *              entry =  0 -> A fun�ao destino est� ao mesmo n�vel
+    *              entry =  1 -> A fun�ao destino est� num n�vel superior    
+    * @param label Etiqueta de destino.
+    */
+    @Override
+   public void call (int entry, String label) throws IOException {
+      m_out.writeComment ("CALL " + entry + ", " + label); 
+      m_out.writeInstruction ("push %%ebp"); 
+      staticLink(1 + entry);
+      m_out.writeInstruction ("push %%ebx"); 
+      m_out.writeInstruction ("mov %%esp, %%ebp"); 
+      m_out.writeInstruction ("call %s", label); 
+    }
+
+    @Override
+   public void ret () throws IOException {
+      comment ("RET"); 
+      m_out.writeInstruction ("movl %%ebp, %%esp"); 
+      m_out.writeInstruction ("movl -4(%%esp), %%eax"); 
+      m_out.writeInstruction ("popl %%ebp"); 
+      m_out.writeInstruction ("popl %%ebp"); 
+      m_out.writeInstruction ("jmp  *%%eax"); 
+   }
+	
+   
+    @Override
+   public void csp (int subNum) throws IOException {
+      m_out.writeComment("CSP " + subNum); 
+      switch(subNum){
+          case 0:
+              m_out.writeInstruction ("call _print_int"); 
+              m_out.writeInstruction ("addl $4, %%esp"); 
+              break;
+
+          case 1:
+              m_out.writeInstruction ("call _read_int"); 
+              m_out.writeInstruction ("pushl %%eax"); 
+              break;
+
+          case 2:
+              m_out.writeInstruction ("call _print_bool"); 
+              m_out.writeInstruction ("addl $4, %%esp"); 
+              break;
+
+          case 3:
+              m_out.writeInstruction ("call _read_bool"); 
+              m_out.writeInstruction ("pushl %%eax"); 
+              break;
+
+          case 4:
+              m_out.writeInstruction ("call _print_ln"); 
+              break;
+              
+          default: assert false: "Unknown CSP value";
+      }
+   }
+   
+
+    @Override
+   public void halt () throws IOException {
+      
+      comment("HALT");
+      m_out.writeInstruction ("lret"); 
+   }
+   
+   
+   //----- Logic and arithmetic instructions
+
+    @Override
+   public void add () throws IOException {
+      comment ("ADD"); 
+      m_out.writeInstruction ("popl (%%eax)"); 
+      m_out.writeInstruction ("addl %%eax, (%%esp)"); 
+   }
+
+    @Override
+   public void sub () throws IOException {
+      comment("SUB");
+      m_out.writeInstruction ("popl (%%eax)");
+      m_out.writeInstruction ("subl %%eax, (%%esp)");
+   }
+
+    @Override
+   public void mul () throws IOException {
+      comment ("MUL"); 
+      m_out.writeInstruction ("popl  %%eax"); 
+      m_out.writeInstruction ("imull (%%esp)"); 
+      m_out.writeInstruction ("movl  %%eax, (%%esp)"); 
+   }
+
+    @Override
+   public void div () throws IOException {
+      comment ("DIV"); 
+      m_out.writeInstruction ("movl  4(%%esp), %%eax"); 
+      m_out.writeInstruction ("cdql"); 
+      m_out.writeInstruction ("idivl (%%esp)"); 
+      m_out.writeInstruction ("addl $4, %%esp"); 
+      m_out.writeInstruction ("movl %%eax, (%%esp)"); 
+   }
+
+	    
+    @Override
+   public void neg () throws IOException {
+      
+      comment ("NEG"); 
+      m_out.writeInstruction ("negl (%%esp)"); 
+   }
+
+    @Override
+   public void not () throws IOException {
+      comment ("NOT"); 
+      m_out.writeInstruction ("notl (%%esp)"); 
+   }
+
+    @Override
+   public void and () throws IOException {
+      comment ("AND"); 
+      m_out.writeInstruction ("popl (%%eax)"); 
+      m_out.writeInstruction ("addl %%eax, (%%esp)"); 
+   }
+    
+    	
+    @Override
+   public void or () throws IOException {
+      comment ("OR"); 
+      m_out.writeInstruction ("popl %%eax"); 
+      m_out.writeInstruction ("orl  %%eax, (%%esp)"); 
+   }
+
+    @Override
+   public void eq () throws IOException {
+      m_out.writeComment ("EQ"); 
+      m_out.writeInstruction ("popl %%eax"); 
+      m_out.writeInstruction ("cmpl (%%esp), %%eax"); 
+      m_out.writeInstruction ("jne  1f"); 
+      m_out.writeInstruction ("movl $1, (%%esp)"); 
+      m_out.writeInstruction ("jmp  2f"); 
+      m_out.writeLabel("1");
+      m_out.writeInstruction ("movl $0, (%%esp)"); 
+      m_out.writeLabel("2");
+   }
+
+    @Override
+   public void neq () throws IOException {
+      m_out.writeComment ("NEQ"); 
+      m_out.writeInstruction ("popl %%eax"); 
+      m_out.writeInstruction ("cmpl (%%esp), %%eax"); 
+      m_out.writeInstruction ("je   1f"); 
+      m_out.writeInstruction ("movl $1, (%%esp)"); 
+      m_out.writeInstruction ("jmp  2f"); 
+      m_out.writeLabel("1");
+      m_out.writeInstruction ("movl $0, (%%esp)"); 
+      m_out.writeLabel("2");
+   }
+   
+    @Override
+   public void lt () throws IOException {
+      m_out.writeComment ("LT"); 
+      m_out.writeInstruction ("popl %%eax"); 
+      m_out.writeInstruction ("cmpl (%%esp), %%eax"); 
+      m_out.writeInstruction ("jle  1f"); 
+      m_out.writeInstruction ("movl $1, (%%esp)"); 
+      m_out.writeInstruction ("jmp  2f"); 
+      m_out.writeLabel("1");
+      m_out.writeInstruction ("movl $0, (%%esp)"); 
+      m_out.writeLabel("2");
+   }
+
+    @Override
+   public void gt () throws IOException {
+      m_out.writeComment ("GT"); 
+      m_out.writeInstruction ("popl %%eax"); 
+      m_out.writeInstruction ("cmpl (%%esp), %%eax"); 
+      m_out.writeInstruction ("jge  1f"); 
+      m_out.writeInstruction ("movl $1, (%%esp)"); 
+      m_out.writeInstruction ("jmp  2f"); 
+      m_out.writeLabel("1");
+      m_out.writeInstruction ("movl $0, (%%esp)"); 
+      m_out.writeLabel("2");
+   }
+
+    @Override
+   public void leq () throws IOException {
+      m_out.writeComment ("LEQ"); 
+      m_out.writeInstruction ("popl %%eax"); 
+      m_out.writeInstruction ("cmpl (%%esp), %%eax"); 
+      m_out.writeInstruction ("jl   1f"); 
+      m_out.writeInstruction ("movl $1, (%%esp)"); 
+      m_out.writeInstruction ("jmp  2f"); 
+      m_out.writeLabel("1");
+      m_out.writeInstruction ("movl $0, (%%esp)"); 
+      m_out.writeLabel("2"); 
+   }
+
+    @Override
+   public void geq () throws IOException {
+      m_out.writeComment ("GEQ"); 
+      m_out.writeInstruction ("popl %%eax"); 
+      m_out.writeInstruction ("cmpl (%%esp), %%eax"); 
+      m_out.writeInstruction ("jg   1f"); 
+      m_out.writeInstruction ("movl $1, (%%esp)"); 
+      m_out.writeInstruction ("jmp  2f"); 
+      m_out.writeLabel("1");
+      m_out.writeInstruction ("movl $0, (%%esp)"); 
+      m_out.writeLabel("2"); 
+   }
+   
+
+   /* M�todos utilit�rios */
+   
+   /**
+    * Emite um label
+    * @param name Nome da etiqueta
+    */
+    @Override
+   public void insLabel (String name) throws IOException {
+      m_out.writeLabel(name);
+   }
+
+   private void commentf (String format,Object... args) throws IOException {
+       m_out.writeComment(String.format(format, args));
+   }
+
+   /**
+    * Seleciona uma seccao de dados nao inicializados
+    */
+    @Override
+   public void sectionBSS ()  throws IOException {
+      m_out.writeDirective (".section .bss");
+   }
+
+   /**
+    * Seleciona uma seccao de codigo
+    */
+    @Override
+   public void sectionTEXT ()  throws IOException {
+      m_out.writeDirective (".section .text");
+      m_out.writeDirective (".globl _P_START");
+   }
+
+   /**
+    * Indica a dimensao da memoria global necessaria.
+    * Atencao que e' necessario estarmos dentro de uma seccao BSS
+    * @param size Dimensao expressa em words
+    */
+    @Override
+   public void globalMemSize (int size)  throws IOException {
+      m_out.writeDirective (".lcomm globals, " + (size * 4));
+   }
+
+    public void comment(String description) throws IOException {
+        m_out.writeComment (description);
+    }
+    
+    /**
+     * Generates the required Assembly code to access the static link
+     * also known as frame pointer.
+     * 
+     * 
+     */
+    private void staticLink(int count) throws IOException {
+        m_out.writeInstruction ("movl %%ebp, %%ebx");
+        for (int  i = 0; i < count; i++) {
+            m_out.writeInstruction ("movl (%%ebx), %%ebx");
+        }
+    }
+}

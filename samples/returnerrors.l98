@@ -1,0 +1,69 @@
+/* returnerrors.l98 : tests the invalid use of return statments.
+ * Copyright (C) 1999  Paulo Pinto, Pablo Tavares
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+return 3;
+let
+     
+  fun f1 () : bool =  let
+                         var x : bool := false
+		      in
+		        x := not x
+		      end
+
+  fun f2 () : bool =  let
+                         var x : bool := true
+			 var y : int  := 0
+		      in
+		        y := readint ();
+			if y > 10 then
+		          x := not x
+		      end
+
+
+  fun f3 () : int =  let
+                         var x : bool := false
+			 var y : int  := 0
+		      in
+		        for j = 1 upto 10 do
+			(
+		          y := readint ();
+			  if y > 10 then
+		           return y
+			);
+			while x do
+			  return y
+		      end
+
+  fun f4 () : bool =  let
+                         var x : bool := false
+			 var y : int  := 0
+		      in
+		        return readbool ();
+		        for j = 1 upto 10 do
+			(
+		          y := readint ();
+			  if y > 10 then
+		           return x
+			)
+		      end
+
+  proc p1 () = return x
+
+in
+ printint (readint ())
+end

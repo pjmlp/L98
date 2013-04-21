@@ -1,0 +1,56 @@
+/* funccall.l98 : tests the function call.
+ * Copyright (C) 1999  Paulo Pinto, Pablo Tavares
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */ 
+let
+   val a : int = 5
+   val b : int = 6
+   
+   var c : bool := false
+   
+   var d : int := 0
+
+   
+   fun f1 (): bool = return a > b
+   
+
+   fun f2 (val w : int): bool = return  w = a
+   
+   
+   fun f3 (val init : int): int = let
+                                    var i : int := init
+		                  in
+		                    while i <= b do
+		                     i := i + 2;
+				    
+				    return i
+		                  end
+			      
+   fun f4 (val w : int, var c : bool): int  = (c := w / 2 = 0; return 5)
+   
+   /* Factorial function */
+   fun f5 (val v : int):int = if v = 0 then
+                                return 1
+			      else
+			        return v * f5 (v -1)
+
+
+in
+  c := f1 () or f2 (a);
+  d := f3 (b + 5 * 2) * f4 (a, c) / f5 (10)
+
+end

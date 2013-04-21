@@ -1,0 +1,101 @@
+package org.progtools.l98.ast;
+import java.lang.Exception;
+import java.util.Enumeration;
+
+import org.progtools.l98.CompilerError;
+import org.progtools.l98.generator.CodeGenerator;
+import org.progtools.l98.table.Environ;
+import org.progtools.l98.util.List;
+
+
+/**
+ * No' que representa uma lista de declaracoes
+ */
+public class ASTDeclList extends ASTDecl {
+  /**
+   * Lista de declaracoes
+   */
+  private List m_decls;
+
+  /**
+   * @param line Linha de inicio das declaracoes
+   */
+  public ASTDeclList (int line) {
+    super (line);
+    m_decls = new List ();
+  }
+
+  
+   /**
+    * @param decl Acrescenta uma declaracao 'a lista
+    */
+  public void add (ASTDecl decl) { m_decls.pushBack (decl); }
+
+  /**
+   * @return O numero de unidades de 32 bits necessarias para guardadar a variavel
+   */
+  public int alloc () {
+    int retValue = 0;
+
+    try {
+       Enumeration iter = m_decls.elements ();
+       ASTDecl decl;
+       int temp;
+
+       while (iter.hasMoreElements ()) {
+        decl = (ASTDecl) iter.nextElement ();
+        retValue += decl.alloc ();
+       }
+     }
+     catch (Exception e) {
+       e.printStackTrace ();
+       System.exit (2);
+     }    
+    
+    
+    return retValue;
+  }
+
+   /**
+    * @return true Se a lista de declaracoes for vazia
+    */
+  public boolean isEmpty () { return m_decls.isEmpty (); }
+   
+  /**
+   * Faz a verificacao semantica das declaracoes
+   * Assume que as declaracoes inserem-se no ambiente
+   * @param env Ambiente corrente
+   * @param err Classe que serve para reportar erros
+   * @param gen Gerador de codigo
+   * @param nesting Profundidade da instrucacao
+   * @param index Proxima posicao disponivel para variaveis
+   * @return A proxima posicao disponivel
+   */
+  public int transverse (Environ env, CompilerError err, CodeGenerator gen, int nesting, int index) {
+     try {
+       Enumeration iter = m_decls.elements ();
+       ASTDecl decl;
+
+       while (iter.hasMoreElements ()) {
+        decl = (ASTDecl) iter.nextElement ();
+        index = decl.transverse (env, err, gen, nesting, index);
+       }
+     }
+     catch (Exception e) {
+       e.printStackTrace ();
+       System.exit (2);
+     }
+    return index;
+  }
+
+   /**
+    * Limpa o ambiente das declaracoes efectuadas
+    * Assume que as ultimas declaracoes sao as que foram efectuadas pelas da lista
+    * @param env Ambiente corrente
+    */
+  public void clearEnviron (Environ env) {
+    for (int i = 0; i < m_decls.length (); i++)
+      env.removeLast ();
+  }
+}
+
