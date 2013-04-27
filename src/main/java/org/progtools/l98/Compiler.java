@@ -63,8 +63,11 @@ public class Compiler {
 	parser.setCompilerError(error);
 	ASTStat node = parser.start();
         
-        if (node != null)
-	  generateCode (node, error, args [args.length - 1], args [0].equals ("-e"));
+        if (node != null) {
+          boolean asExe = args.length > 0 && args [0].equals ("-e");
+          boolean removeAsm = args.length > 1 && args [1].equals ("-e");
+	  generateCode (node, error, args [args.length - 1], asExe, removeAsm);
+        }
       } 
       catch (ParseException | FileNotFoundException ex) {
 	error.message (ex.getMessage ());
