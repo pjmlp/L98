@@ -50,9 +50,9 @@ public class Environ {
    */
   private Stack<String>    m_ids;
 
-  public Environ () { 
-    m_vars = new HashMap<String, Stack>();
-    m_ids = new Stack<String> ();
+  Environ () { 
+    m_vars = new HashMap<>();
+    m_ids = new Stack<> ();
   }
 
   /**
