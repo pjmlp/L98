@@ -244,7 +244,7 @@ public final class X86CodeGenerator implements CodeGenerator {
    public void halt () throws IOException {
       
       comment("HALT");
-      m_out.writeInstruction ("ret"); 
+      m_out.writeInstruction ("jmp l98_os_terminate"); 
    }
    
    
