@@ -22,7 +22,7 @@ import java.io.*;
 /**
  *  Code generator for a textual representation of L98 bytecode.
  */
-public class LVMCodeGenerator implements CodeGenerator, Closeable {
+public final class LVMCodeGenerator implements CodeGenerator {
    /**
     * Output source for the Assembly code.
     */
@@ -31,9 +31,12 @@ public class LVMCodeGenerator implements CodeGenerator, Closeable {
    /**
     * @param out Where to write the text representation of the Assembly code.
     * @param indent Desired identantion level when no labels are used.
+    * @param size The amount of bytes to allocate in the global memory
     */
-   public LVMCodeGenerator (OutputStream out, int indent) {
+   public LVMCodeGenerator (OutputStream out, int indent, int size) throws IOException {
       m_out = new PrettyWritter (out, indent);
+      m_out.writeDirective("GLOBALS " + size);
+      m_out.writeLabel("P_START");
    }
    
    /**
@@ -41,6 +44,7 @@ public class LVMCodeGenerator implements CodeGenerator, Closeable {
     */
     @Override
   public void close () throws IOException {
+      halt ();
       m_out.close ();
   }
   
@@ -203,20 +207,5 @@ public class LVMCodeGenerator implements CodeGenerator, Closeable {
     @Override
    public void comment (String description) throws IOException {
       m_out.writeComment(description);
-   }
-
-    @Override
-   public void sectionBSS ()  throws IOException {
-        // Nothing to do for L98 bytecodes
-   }
-
-    @Override
-   public void sectionTEXT ()  throws IOException {
-      // Nothing to do for L98 bytecodes
-   }
-
-    @Override
-   public void globalMemSize (int size)  throws IOException {
-      m_out.writeDirective("GLOBALS " + size);
    }
 }

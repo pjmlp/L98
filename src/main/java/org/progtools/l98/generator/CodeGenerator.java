@@ -29,7 +29,7 @@ import java.io.IOException;
  * concept a bit more OO friendly.
  * 
  */
-public interface CodeGenerator {
+public interface CodeGenerator extends AutoCloseable {
 
     //--------- Arithmetic and logical operations
     
@@ -71,11 +71,6 @@ public interface CodeGenerator {
      */
     void not() throws IOException;
     
-    /**
-     * To cleanup all codegeneration resources as a last step.
-     */
-    void close() throws IOException;
-
     /**
      * Divides the two topmost values in the stack and stores back the result into
      * the stack.
@@ -137,13 +132,6 @@ public interface CodeGenerator {
      */
     void lt() throws IOException;
     
-    /**
-     * Indica a dimensao da memoria global necessaria.
-     * Atencao que e' necessario estarmos dentro de uma seccao BSS
-     * @param size Dimensao expressa em words
-     */
-    void globalMemSize(int size) throws IOException;
-
     //--------- Utility Methods
     
     /**
@@ -276,17 +264,4 @@ public interface CodeGenerator {
      * @param offset Offset inside the frame for the lexical level.
      */
     void loadVarA(int level, int offset) throws IOException;
-
-    
-
-    /**
-     * Starts a data section.
-     */
-    void sectionBSS() throws IOException;
-
-    /**
-     * Starts a code section.
-     */
-    void sectionTEXT() throws IOException;
-
 }

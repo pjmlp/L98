@@ -23,7 +23,9 @@ import java.io.*;
  *  Code generator for 32 bit x86 code in Assembly format compatible with Gas from
  * GNU binutils for Linux systems.
  */
-public class X86CodeGenerator implements CodeGenerator, Closeable {
+public final class X86CodeGenerator implements CodeGenerator {
+    private final int WORD_SIZE = 4; // 4 bytes (32 bits)
+    
    /**
     * Output source for the Assembly code.
     */
@@ -32,9 +34,15 @@ public class X86CodeGenerator implements CodeGenerator, Closeable {
    /**
     * @param out Where to write the text representation of the Assembly code.
     * @param indent Desired identantion level when no labels are used.
+    * @param size The amount of bytes to allocate in the global memory
     */
-   public X86CodeGenerator (OutputStream out, int indent) {
+   public X86CodeGenerator (OutputStream out, int indent, int size) throws IOException {
        m_out = new PrettyWritter (out, indent, PrettyWritter.CommentFormat.UNIX);
+       
+      sectionBSS ();
+      globalMemSize (size);
+      sectionTEXT ();
+      insLabel ("P_START");       
    }
    
    /**
@@ -42,6 +50,7 @@ public class X86CodeGenerator implements CodeGenerator, Closeable {
     */
     @Override
   public void close () throws IOException {
+      halt ();
       m_out.close ();
   }
   
@@ -61,9 +70,9 @@ public class X86CodeGenerator implements CodeGenerator, Closeable {
       m_out.writeComment("LOADVAR " + level + ", " + offset); 
       staticLink(level);
       if (offset < 0) {
-          m_out.writeInstruction ("movl %d(%%ebx), %%eax", (offset - 1) * -4);
+          m_out.writeInstruction ("movl %d(%%ebx), %%eax", (offset - 1) * -WORD_SIZE);
       } else {
-          m_out.writeInstruction ("movl %d(%%ebx), %%eax", (offset + 1) * -4);
+          m_out.writeInstruction ("movl %d(%%ebx), %%eax", (offset + 1) * -WORD_SIZE);
       }
       m_out.writeInstruction ("pushl %%eax");
    }
@@ -75,9 +84,9 @@ public class X86CodeGenerator implements CodeGenerator, Closeable {
       m_out.writeInstruction ("popl %%eax "); 
       staticLink(level);
       if (offset < 0) {
-          m_out.writeInstruction ("movl %%eax, %d(%%ebx)", (offset - 1) * -4);
+          m_out.writeInstruction ("movl %%eax, %d(%%ebx)", (offset - 1) * -WORD_SIZE);
       } else {
-          m_out.writeInstruction ("movl %%eax, %d(%%ebx)", (offset + 1) * -4);
+          m_out.writeInstruction ("movl %%eax, %d(%%ebx)", (offset + 1) * -WORD_SIZE);
       }
    }
    
@@ -86,7 +95,7 @@ public class X86CodeGenerator implements CodeGenerator, Closeable {
    public void loadGlobal (int offset) throws IOException {
       commentf("LOADGLOBAL %d", offset);
       m_out.writeInstruction ("movl  $%d, %%esi", offset); 
-      m_out.writeInstruction ("movl  globals(, %%esi, 4), %%eax"); 
+      m_out.writeInstruction ("movl  globals(, %%esi, %d), %%eax", WORD_SIZE); 
       m_out.writeInstruction ("pushl %%eax"); 
    }
 
@@ -96,7 +105,7 @@ public class X86CodeGenerator implements CodeGenerator, Closeable {
       commentf("STOREGLOBAL %d", offset);
       m_out.writeInstruction ("popl %%eax");
       m_out.writeInstruction ("movl  $%d, %%esi", offset); 
-      m_out.writeInstruction ("movl %%eax, globals(, %%esi, 4)");
+      m_out.writeInstruction ("movl %%eax, globals(, %%esi, %d)", WORD_SIZE);
    }
 
    /**
@@ -119,7 +128,7 @@ public class X86CodeGenerator implements CodeGenerator, Closeable {
    public void loadGlobalA (int offset) throws IOException {
       
       commentf("LOADGLOBALA %d", offset);
-      m_out.writeInstruction("lea	eax, [globals+4*%d]", offset); 
+      m_out.writeInstruction("lea	eax, [globals+%d*%d]", WORD_SIZE, offset); 
       m_out.writeInstruction ("push 	eax"); 
    }
 
@@ -141,7 +150,7 @@ public class X86CodeGenerator implements CodeGenerator, Closeable {
     @Override
    public void alloc (int size) throws IOException {
       commentf("ALLOC %d", size);
-      m_out.writeInstruction("subl $%d, %%esp", (size * 4)); 
+      m_out.writeInstruction("subl $%d, %%esp", (size * WORD_SIZE)); 
    }
    
    /* Controle */
@@ -191,7 +200,7 @@ public class X86CodeGenerator implements CodeGenerator, Closeable {
    public void ret () throws IOException {
       comment ("RET"); 
       m_out.writeInstruction ("movl %%ebp, %%esp"); 
-      m_out.writeInstruction ("movl -4(%%esp), %%eax"); 
+      m_out.writeInstruction ("movl -%d(%%esp), %%eax", WORD_SIZE); 
       m_out.writeInstruction ("popl %%ebp"); 
       m_out.writeInstruction ("popl %%ebp"); 
       m_out.writeInstruction ("jmp  *%%eax"); 
@@ -204,7 +213,7 @@ public class X86CodeGenerator implements CodeGenerator, Closeable {
       switch(subNum){
           case 0:
               m_out.writeInstruction ("call print_int"); 
-              m_out.writeInstruction ("addl $4, %%esp"); 
+              m_out.writeInstruction ("addl $%d, %%esp", WORD_SIZE); 
               break;
 
           case 1:
@@ -214,7 +223,7 @@ public class X86CodeGenerator implements CodeGenerator, Closeable {
 
           case 2:
               m_out.writeInstruction ("call print_bool"); 
-              m_out.writeInstruction ("addl $4, %%esp"); 
+              m_out.writeInstruction ("addl $%d, %%esp", WORD_SIZE); 
               break;
 
           case 3:
@@ -266,10 +275,10 @@ public class X86CodeGenerator implements CodeGenerator, Closeable {
     @Override
    public void div () throws IOException {
       comment ("DIV"); 
-      m_out.writeInstruction ("movl  4(%%esp), %%eax"); 
+      m_out.writeInstruction ("movl  %d(%%esp), %%eax", WORD_SIZE); 
       m_out.writeInstruction ("cdql"); 
       m_out.writeInstruction ("idivl (%%esp)"); 
-      m_out.writeInstruction ("addl $4, %%esp"); 
+      m_out.writeInstruction ("addl $%d, %%esp", WORD_SIZE); 
       m_out.writeInstruction ("movl %%eax, (%%esp)"); 
    }
 
@@ -381,12 +390,6 @@ public class X86CodeGenerator implements CodeGenerator, Closeable {
    }
    
 
-   /* Mï¿½todos utilitï¿½rios */
-   
-   /**
-    * Emite um label
-    * @param name Nome da etiqueta
-    */
     @Override
    public void insLabel (String name) throws IOException {
       m_out.writeLabel(name);
@@ -397,31 +400,28 @@ public class X86CodeGenerator implements CodeGenerator, Closeable {
    }
 
    /**
-    * Seleciona uma seccao de dados nao inicializados
+    * Starts a non-initialized data section.
     */
-    @Override
    public void sectionBSS ()  throws IOException {
       m_out.writeDirective (".code32");
       m_out.writeDirective (".section .bss");
    }
 
    /**
-    * Seleciona uma seccao de codigo
+    * Starts a code section.
     */
-    @Override
    public void sectionTEXT ()  throws IOException {
       m_out.writeDirective (".section .text");
       m_out.writeDirective (".globl P_START");
    }
 
    /**
-    * Indica a dimensao da memoria global necessaria.
-    * Atencao que e' necessario estarmos dentro de uma seccao BSS
-    * @param size Dimensao expressa em words
+    * Sets the required ammount of global memory.
+    * This should only be called after a BSS section was started.
+    * @param size The value is in words.
     */
-    @Override
    public void globalMemSize (int size)  throws IOException {
-      m_out.writeDirective (".lcomm globals, " + (size * 4));
+      m_out.writeDirective (".lcomm globals, " + (size * WORD_SIZE));
    }
 
     public void comment(String description) throws IOException {
@@ -431,8 +431,6 @@ public class X86CodeGenerator implements CodeGenerator, Closeable {
     /**
      * Generates the required Assembly code to access the static link
      * also known as frame pointer.
-     * 
-     * 
      */
     private void staticLink(int count) throws IOException {
         m_out.writeInstruction ("movl %%ebp, %%ebx");
