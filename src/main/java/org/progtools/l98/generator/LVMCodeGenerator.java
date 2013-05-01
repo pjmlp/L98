@@ -35,7 +35,7 @@ public final class LVMCodeGenerator implements CodeGenerator {
     */
    public LVMCodeGenerator (OutputStream out, int indent, int size) throws IOException {
       m_out = new PrettyWritter (out, indent);
-      m_out.writeDirective("GLOBALS " + size);
+      m_out.writeInstruction("GLOBALS " + size);
       m_out.writeLabel("P_START");
    }
    
