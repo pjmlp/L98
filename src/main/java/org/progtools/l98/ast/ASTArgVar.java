@@ -17,7 +17,7 @@
  * Boston, MA 02111-1307, USA.
  */
 package org.progtools.l98.ast;
-import org.progtools.l98.Attributes;
+import org.progtools.l98.table.Attributes;
 import org.progtools.l98.access.IFrame;
 import org.progtools.l98.table.Environ;
 import org.progtools.l98.type.Type;

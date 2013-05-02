@@ -19,7 +19,7 @@
 package org.progtools.l98.ast;
 import java.io.IOException;
 
-import org.progtools.l98.Attributes;
+import org.progtools.l98.table.Attributes;
 import org.progtools.l98.CompilerError;
 import org.progtools.l98.access.Access;
 import org.progtools.l98.access.Frame;

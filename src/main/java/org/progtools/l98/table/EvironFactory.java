@@ -18,7 +18,6 @@
  */
 package org.progtools.l98.table;
 
-import org.progtools.l98.Attributes;
 import org.progtools.l98.access.Access;
 import org.progtools.l98.access.Builtin;
 import org.progtools.l98.generator.PreDefinedRoutines;
