@@ -18,9 +18,10 @@
  */
 
 package org.progtools.l98.ast;
-import java.util.Enumeration;
+import java.util.Deque;
+import java.util.Iterator;
+import java.util.LinkedList;
 
-import org.progtools.l98.util.List;
 
 
 /**
@@ -30,32 +31,32 @@ public class ASTElementList extends ASTNode{
   /**
    * Expressions
    */
-  private List m_elements;
+  private Deque<ASTExp> m_elements;
 
   public ASTElementList () {
     super (0);
-    m_elements = new List ();
+    m_elements = new LinkedList<> ();
   }
 
    /**
     * @param element Expression to add to the list
     */
-  public void add (ASTExp element) { m_elements.pushBack (element); }
+  public void add (ASTExp element) { m_elements.add (element); }
 
    /**
     * @return An enumerator over the available expressions.
     */
-  public Enumeration elements () { return m_elements.elements (); }
+  public Iterator<ASTExp> elements () { return m_elements.iterator(); }
   
    /**
     * @return An enumerator over the available expressions in reversed order.
     */
-  public Enumeration elementsBackward () { return m_elements.elementsBackward (); }
+  public Iterator<ASTExp> elementsBackward () { return m_elements.descendingIterator(); }
   
    /**
     * @return Amount of available expressions in the list.
     */
-  public int length () { return m_elements.length (); }
+  public int length () { return m_elements.size (); }
   
 }
 

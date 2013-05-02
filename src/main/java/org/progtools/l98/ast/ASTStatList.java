@@ -17,12 +17,13 @@
  * Boston, MA 02111-1307, USA.
  */
 package org.progtools.l98.ast;
-import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.progtools.l98.CompilerError;
 import org.progtools.l98.generator.CodeGenerator;
 import org.progtools.l98.table.Environ;
-import org.progtools.l98.util.List;
 
 
 /**
@@ -32,20 +33,20 @@ public class ASTStatList extends ASTStat {
    /**
     * Instructions
     */
-  private List m_stats;
+  private List<ASTStat> m_stats;
 
   /**
    * @param line where the expression was found.
    */   
   public ASTStatList (int line) {
     super (line);
-    m_stats = new List ();
+    m_stats = new LinkedList<> ();
   }
 
   /**
    * @param stat instruction to add to the block
    */
-  public void add (ASTStat stat) { m_stats.pushBack (stat); }
+  public void add (ASTStat stat) { m_stats.add (stat); }
 
   
   /**
@@ -55,12 +56,12 @@ public class ASTStatList extends ASTStat {
     int retValue = 0;
 
     try {
-       Enumeration iter = m_stats.elements ();
+       Iterator<ASTStat> iter = m_stats.iterator();
        ASTStat stat;
        int temp;
 
-       while (iter.hasMoreElements ()) {
-        stat = (ASTStat) iter.nextElement ();
+       while (iter.hasNext()) {
+        stat = (ASTStat) iter.next ();
         temp = stat.alloc ();
 	if (temp > retValue)
 	   retValue = temp;
@@ -86,16 +87,16 @@ public class ASTStatList extends ASTStat {
    public boolean transverse (Environ env, CompilerError err, CodeGenerator gen, int nesting, int index) {
      boolean hasReturn = false;
      try {
-       Enumeration iter = m_stats.elements ();
+       Iterator<ASTStat> iter = m_stats.iterator();
        ASTStat stat;
 
-       while (iter.hasMoreElements () && !hasReturn) {
-        stat = (ASTStat) iter.nextElement ();
+       while (iter.hasNext()&& !hasReturn) {
+        stat = iter.next ();
         hasReturn = stat.transverse (env, err, gen, nesting, index);
        }
        
-       if (hasReturn && iter.hasMoreElements ()) {
-	  stat = (ASTStat) iter.nextElement ();
+       if (hasReturn && iter.hasNext()) {
+	  stat = (ASTStat) iter.next ();
 	  err.warning (stat.getLine () + ": Superflus code from this line onwards, return has been found in the previous lines");
        }
      }

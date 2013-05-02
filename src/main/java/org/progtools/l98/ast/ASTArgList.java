@@ -19,9 +19,10 @@
 package org.progtools.l98.ast;
 
 
-import java.util.Enumeration;
+import java.util.Deque;
+import java.util.Iterator;
+import java.util.LinkedList;
 import org.progtools.l98.table.Environ;
-import org.progtools.l98.util.List;
 
 
 /**
@@ -31,33 +32,33 @@ public class ASTArgList extends ASTNode {
   /**
    * The arguments to keep around.
    */
-  private List m_args;
+  private Deque<ASTArg> m_args;
 
   public ASTArgList () {
     super (0);
-    m_args = new List ();
+    m_args = new LinkedList<> ();
   }
 
   /**
    * Adds an argument to the list.
    */
-  public void add (ASTArg arg) { m_args.pushBack(arg); }
+  public void add (ASTArg arg) { m_args.add(arg); }
 
   /**
    * @return Number of arguments currently on the list.
    */
-  public int length () { return m_args.length(); }
+  public int length () { return m_args.size(); }
   
   /**
    * @return An enumeration for the list arguments
    */
-  public Enumeration elements () { return m_args.elements(); }
+  public Iterator<ASTArg> elements () { return m_args.iterator(); }
   
 
    /**
     * @return A reversed enumeration for the list arguments
     */
-  public Enumeration elementsBackward () { return m_args.elementsBackward (); }  
+  public Iterator<ASTArg> elementsBackward () { return m_args.descendingIterator(); }  
   
   /**
    * Adiciona ao ambiente corrente as declaracoes existentes na lista
@@ -71,14 +72,11 @@ public class ASTArgList extends ASTNode {
    * @param nesting current static lexical level.
    */   
   public void fillEnviron (Environ env, int nesting) {
-    Enumeration iter = m_args.elements ();
-    ASTArg arg;
-    int index = -1;    
+    int index = -1;  
     
-    while (iter.hasMoreElements ()) {
-      arg = (ASTArg) iter.nextElement ();
-      arg.transverse (env, nesting, index);
-      index--;
+    for (ASTArg arg: m_args) {
+       arg.transverse (env, nesting, index);
+      index--;       
     }
   }
 
@@ -89,7 +87,7 @@ public class ASTArgList extends ASTNode {
    * @param env 
    */
   public void clearEnviron (Environ env) {
-    for (int i = 0; i < m_args.length (); i++)
+    for (int i = 0; i < m_args.size (); i++)
       env.removeLast ();
   }
 }

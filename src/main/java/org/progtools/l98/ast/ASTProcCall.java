@@ -20,6 +20,7 @@
 package org.progtools.l98.ast;
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.Iterator;
 
 import org.progtools.l98.table.Attributes;
 import org.progtools.l98.CompilerError;
@@ -70,17 +71,17 @@ public class ASTProcCall extends ASTStat {
    * @param gen code generator.
    * @param nesting current static lexical level.
    */
-  private void pushArgs (Environ env, Enumeration args, CompilerError err, CodeGenerator gen,
+  private void pushArgs (Environ env, Iterator<TypeArg> args, CompilerError err, CodeGenerator gen,
 			 int nesting)  {
     int argCount = m_elementList.length ();
     ASTExp exp;
     TypeArg argType;
-    Enumeration exps = m_elementList.elementsBackward ();
+    Iterator<ASTExp> exps = m_elementList.elementsBackward ();
     Type expType = null;
      
-    while (exps.hasMoreElements () && args.hasMoreElements ()) {
-      exp = (ASTExp) exps.nextElement ();
-      argType = (TypeArg) args.nextElement ();
+    while (exps.hasNext()&& args.hasNext ()) {
+      exp = (ASTExp) exps.next ();
+      argType = (TypeArg) args.next ();
       	  
       
       if (argType.getIsVar ())
@@ -101,9 +102,9 @@ public class ASTProcCall extends ASTStat {
       argCount--;
     }
 	
-    if (exps.hasMoreElements ())
+    if (exps.hasNext ())
       err.message (getLine () + ": Too many parameters");
-    else if (args.hasMoreElements ())
+    else if (args.hasNext ())
       err.message (getLine () + ": Parameters missing");
   }
   

@@ -17,9 +17,9 @@
  * Boston, MA 02111-1307, USA.
  */
 package org.progtools.l98.type;
-import java.util.Enumeration;
+import java.util.Deque;
+import java.util.Iterator;
 
-import org.progtools.l98.util.List;
 
 
 /**
@@ -29,7 +29,7 @@ public class TypeFunc extends Type {
   /**
    * Data types used by the arguments.
    */
-  private List m_args;
+  private Deque<TypeArg> m_args;
   
   /**
    * Data types used by the resulted result.
@@ -46,7 +46,7 @@ public class TypeFunc extends Type {
    * @param retType Tipo de retorno da funcao
    * @param retOffset Deslocamento da posicao onde colocar o resultado da funcao    
    */
-  public TypeFunc (List args, Type retType, int retOffset) {
+  public TypeFunc (Deque<TypeArg> args, Type retType, int retOffset) {
     m_args = args;
     m_retType = retType;
     m_retOffset = retOffset;
@@ -66,18 +66,18 @@ public class TypeFunc extends Type {
   /**
    * @returns An enumeration of the function's arguments.
    */
-  public Enumeration elements () { return m_args.elements (); }
+  public Iterator<TypeArg> elements () { return m_args.iterator(); }
 
   /**
    * @returns A reversed enumeration of the function's arguments.
    */
-  public Enumeration elementsBackward () { return m_args.elementsBackward (); }
+  public Iterator<TypeArg> elementsBackward () { return m_args.descendingIterator(); }
 
 
    /**
     * @return Amount of parameters expected by the function.
     */
-  public int length () { return m_args.length (); }
+  public int length () { return m_args.size(); }
   
   /**
    * Makes sure two TypeFunc instances can be properly compared.

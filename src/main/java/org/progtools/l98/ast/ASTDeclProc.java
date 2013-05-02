@@ -19,7 +19,9 @@
 
 package org.progtools.l98.ast;
 import java.io.IOException;
-import java.util.Enumeration;
+import java.util.Deque;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import org.progtools.l98.table.Attributes;
 import org.progtools.l98.CompilerError;
@@ -29,7 +31,6 @@ import org.progtools.l98.generator.LabelGenerator;
 import org.progtools.l98.table.Environ;
 import org.progtools.l98.type.TypeArg;
 import org.progtools.l98.type.TypeProc;
-import org.progtools.l98.util.List;
 
 
 /**
@@ -93,18 +94,18 @@ public class ASTDeclProc extends ASTDecl {
    * @return function's type.
    */
   private TypeProc addProcToEnv (String label, Environ env, int nesting) {
-    Enumeration iter = m_args.elements ();
-    List typeList = new List ();
+    Iterator<ASTArg> iter = m_args.elements ();
+    Deque<TypeArg> typeList = new LinkedList<> ();
     ASTArg arg;
     TypeArg argType;
 
     
     // Prepares the argument list
-    while (iter.hasMoreElements ()) {
-      arg = (ASTArg) iter.nextElement ();
+    while (iter.hasNext()) {
+      arg = (ASTArg) iter.next ();
       argType = new TypeArg (arg instanceof ASTArgVar, arg.getType ());
        
-      typeList.pushBack (argType);
+      typeList.add (argType);
     }
 
     // Adds the procedure to the environment

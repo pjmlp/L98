@@ -18,6 +18,8 @@
  */
 package org.progtools.l98.table;
 
+import java.util.Deque;
+import java.util.LinkedList;
 import org.progtools.l98.access.Access;
 import org.progtools.l98.access.Builtin;
 import org.progtools.l98.generator.PreDefinedRoutines;
@@ -27,7 +29,6 @@ import org.progtools.l98.type.TypeBool;
 import org.progtools.l98.type.TypeFunc;
 import org.progtools.l98.type.TypeInt;
 import org.progtools.l98.type.TypeProc;
-import org.progtools.l98.util.List;
 
 /**
  * Creates an pre-configured environment for L98.
@@ -35,27 +36,27 @@ import org.progtools.l98.util.List;
 public final class EvironFactory {
     public static Environ getEnvironment() {
         Environ env = new Environ (); 
-        List args;
+        Deque<TypeArg> args;
         Type subType;
         Attributes attr;
         Access subAccess;
 
         // Creates the readint function
-        subType = new TypeFunc (new List (), new TypeInt (), 1);
+        subType = new TypeFunc (new LinkedList<TypeArg> (), new TypeInt (), 1);
         subAccess = new Builtin (PreDefinedRoutines.READINT);
         attr = new Attributes (subType, subAccess, false, false);
         env.update ("readint", attr);
 
 
         // Creates the readbool function
-        subType = new TypeFunc (new List (), new TypeBool (), 1);
+        subType = new TypeFunc (new LinkedList<TypeArg> (), new TypeBool (), 1);
         subAccess = new Builtin (PreDefinedRoutines.READBOOL);
         attr = new Attributes (subType, subAccess, false, false);
         env.update ("readbool", attr);
 
         // Creates the printint procedure
-        args = new List ();
-        args.pushBack (new TypeArg (false, new TypeInt ()));
+        args = new LinkedList<> ();
+        args.add (new TypeArg (false, new TypeInt ()));
 
         subType = new TypeProc (args);
         subAccess = new Builtin (PreDefinedRoutines.PRINTINT);
@@ -63,8 +64,8 @@ public final class EvironFactory {
         env.update ("printint", attr);
 
         // Creates the printbool procedure
-        args = new List ();
-        args.pushBack (new TypeArg (false, new TypeBool ()));
+        args = new LinkedList<> ();
+        args.add (new TypeArg (false, new TypeBool ()));
 
         subType = new TypeProc (args);
         subAccess = new Builtin (PreDefinedRoutines.PRINTBOOL);
@@ -72,7 +73,7 @@ public final class EvironFactory {
         env.update ("printbool", attr);
 
         // Creates the println procedure
-        subType = new TypeProc (new List ());
+        subType = new TypeProc (new LinkedList<TypeArg> ());
         subAccess = new Builtin (PreDefinedRoutines.PRINTLN);
         attr = new Attributes (subType, subAccess, false, false);
         env.update ("println", attr);

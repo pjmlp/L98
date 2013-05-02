@@ -19,11 +19,13 @@
 
 package org.progtools.l98.ast;
 import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.progtools.l98.CompilerError;
 import org.progtools.l98.generator.CodeGenerator;
 import org.progtools.l98.table.Environ;
-import org.progtools.l98.util.List;
 
 
 /**
@@ -33,21 +35,21 @@ public class ASTDeclList extends ASTDecl {
   /**
    * Declarations list
    */
-  private List m_decls;
+  private List<ASTDecl> m_decls;
 
   /**
    * @param line where the expression was found.
    */
   public ASTDeclList (int line) {
     super (line);
-    m_decls = new List ();
+    m_decls = new LinkedList<> ();
   }
 
   
    /**
     * @param decl Adds a new declaration to the list
     */
-  public void add (ASTDecl decl) { m_decls.pushBack (decl); }
+  public void add (ASTDecl decl) { m_decls.add (decl); }
 
   /**
    * @return Number of 32 bit slots to allocate
@@ -56,12 +58,12 @@ public class ASTDeclList extends ASTDecl {
     int retValue = 0;
 
     try {
-       Enumeration iter = m_decls.elements ();
+       Iterator<ASTDecl> iter = m_decls.iterator ();
        ASTDecl decl;
        int temp;
 
-       while (iter.hasMoreElements ()) {
-        decl = (ASTDecl) iter.nextElement ();
+       while (iter.hasNext()) {
+        decl = iter.next ();
         retValue += decl.alloc ();
        }
      }
@@ -91,11 +93,11 @@ public class ASTDeclList extends ASTDecl {
    */  
   public int transverse (Environ env, CompilerError err, CodeGenerator gen, int nesting, int index) {
      try {
-       Enumeration iter = m_decls.elements ();
+       Iterator<ASTDecl> iter = m_decls.iterator ();
        ASTDecl decl;
 
-       while (iter.hasMoreElements ()) {
-        decl = (ASTDecl) iter.nextElement ();
+       while (iter.hasNext()) {
+        decl = iter.next ();
         index = decl.transverse (env, err, gen, nesting, index);
        }
      }
@@ -113,7 +115,7 @@ public class ASTDeclList extends ASTDecl {
     * @param env Current environment.
     */
   public void clearEnviron (Environ env) {
-    for (int i = 0; i < m_decls.length (); i++)
+    for (int i = 0; i < m_decls.size (); i++)
       env.removeLast ();
   }
 }

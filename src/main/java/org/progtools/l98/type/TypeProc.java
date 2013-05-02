@@ -17,9 +17,9 @@
  * Boston, MA 02111-1307, USA.
  */
 package org.progtools.l98.type;
-import java.util.Enumeration;
+import java.util.Deque;
+import java.util.Iterator;
 
-import org.progtools.l98.util.List;
 
 
 /**
@@ -29,27 +29,27 @@ public class TypeProc extends Type {
   /**
    * Data types used by the arguments.
    */
-  private List m_args;
+  private Deque<TypeArg> m_args;
   
   /**
    * @param args List of types used by the procedure arguments.
    */
-  public TypeProc (List args) { m_args = args; }
+  public TypeProc (Deque<TypeArg> args) { m_args = args; }
 
   /**
    * @returns An enumeration of the procedure's arguments.
    */
-  public Enumeration elements () { return m_args.elements (); }
+  public Iterator<TypeArg> elements () { return m_args.iterator(); }
 
   /**
    * @returns A reversed enumeration of the procedure arguments.
    */
-  public Enumeration elementsBackward () { return m_args.elementsBackward (); }
+  public Iterator<TypeArg> elementsBackward () { return m_args.descendingIterator(); }
 
    /**
     * @return Amount of parameters expected by the procedure.
     */
-  public int length () { return m_args.length (); }
+  public int length () { return m_args.size (); }
   
   /**
    * Makes sure two TypeProc instances can be properly compared.
