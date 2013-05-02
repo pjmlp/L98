@@ -16,7 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-package org.progtools.l98;
+package org.progtools.l98.table;
 import org.progtools.l98.access.Access;
 import org.progtools.l98.type.Type;
 
