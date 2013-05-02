@@ -119,8 +119,8 @@ public final class LVMCodeGenerator implements CodeGenerator {
    }
    
     @Override
-   public void csp (int subNum) throws IOException {
-      m_out.writeInstruction ("CSP " + subNum); 
+   public void csp (PreDefinedRoutines subNum) throws IOException {
+      m_out.writeInstruction ("CSP " + subNum.ordinal()); 
    }
    
     @Override

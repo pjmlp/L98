@@ -20,44 +20,20 @@ package org.progtools.l98.access;
 import java.io.IOException;
 
 import org.progtools.l98.generator.CodeGenerator;
+import org.progtools.l98.generator.PreDefinedRoutines;
 
 /**
  * Access to builtin data types.
  */
 public class Builtin extends Access {
-  /**
-   * printint procedure
-   */
-  public static final int PRINTINT = 0;
-  
-  /**
-   * readint function
-   */
-  public static final int READINT = 1;
-  
-  /**
-   * printbool procedure
-   */
-  public static final int PRINTBOOL = 2;
-  /**
-   * readbool function
-   */
-  public static final int READBOOL = 3;
+    
 
-  /**
-   * println procedure
-   */
-  public static final int PRINTLN = 4;
-
-  /**
-   * Subrotina que este acesso representa
-   */
-  private int m_subrotine;
+  private PreDefinedRoutines  m_subrotine;
   
   /**
    * @param subrotine Type of function represented by this memory access.
    */
-  public Builtin (int subrotine) { m_subrotine = subrotine; }
+  public Builtin (PreDefinedRoutines subrotine) { m_subrotine = subrotine; }
 
 
    public void genLoadAccess (CodeGenerator gen, int nesting) throws IOException {

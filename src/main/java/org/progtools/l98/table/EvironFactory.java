@@ -21,6 +21,7 @@ package org.progtools.l98.table;
 import org.progtools.l98.Attributes;
 import org.progtools.l98.access.Access;
 import org.progtools.l98.access.Builtin;
+import org.progtools.l98.generator.PreDefinedRoutines;
 import org.progtools.l98.type.Type;
 import org.progtools.l98.type.TypeArg;
 import org.progtools.l98.type.TypeBool;
@@ -42,14 +43,14 @@ public final class EvironFactory {
 
         // Creates the readint function
         subType = new TypeFunc (new List (), new TypeInt (), 1);
-        subAccess = new Builtin (Builtin.READINT);
+        subAccess = new Builtin (PreDefinedRoutines.READINT);
         attr = new Attributes (subType, subAccess, false, false);
         env.update ("readint", attr);
 
 
         // Creates the readbool function
         subType = new TypeFunc (new List (), new TypeBool (), 1);
-        subAccess = new Builtin (Builtin.READBOOL);
+        subAccess = new Builtin (PreDefinedRoutines.READBOOL);
         attr = new Attributes (subType, subAccess, false, false);
         env.update ("readbool", attr);
 
@@ -58,7 +59,7 @@ public final class EvironFactory {
         args.pushBack (new TypeArg (false, new TypeInt ()));
 
         subType = new TypeProc (args);
-        subAccess = new Builtin (Builtin.PRINTINT);
+        subAccess = new Builtin (PreDefinedRoutines.PRINTINT);
         attr = new Attributes (subType, subAccess, false, false);
         env.update ("printint", attr);
 
@@ -67,13 +68,13 @@ public final class EvironFactory {
         args.pushBack (new TypeArg (false, new TypeBool ()));
 
         subType = new TypeProc (args);
-        subAccess = new Builtin (Builtin.PRINTBOOL);
+        subAccess = new Builtin (PreDefinedRoutines.PRINTBOOL);
         attr = new Attributes (subType, subAccess, false, false);
         env.update ("printbool", attr);
 
         // Creates the println procedure
         subType = new TypeProc (new List ());
-        subAccess = new Builtin (Builtin.PRINTLN);
+        subAccess = new Builtin (PreDefinedRoutines.PRINTLN);
         attr = new Attributes (subType, subAccess, false, false);
         env.update ("println", attr);
 

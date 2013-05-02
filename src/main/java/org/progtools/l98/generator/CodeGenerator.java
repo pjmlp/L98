@@ -161,14 +161,8 @@ public interface CodeGenerator extends AutoCloseable {
 
     /**
      * Invokes a pre-defined subroutine.
-     * @param subNum Id number of the subroutine.
-     *               subNum = 0 -> printint
-     *               subNum = 1 -> readint
-     *               subNum = 2 -> printbool
-     *               subNum = 3 -> readbool
-     *               subNum = 4 -> println
      */
-    void csp(int subNum) throws IOException;    
+    void csp(PreDefinedRoutines subNum) throws IOException;    
     
     /**
      * Inconditional jump to a given destination.
