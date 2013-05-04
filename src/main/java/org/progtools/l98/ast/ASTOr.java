@@ -48,6 +48,7 @@ public class ASTOr extends ASTBinOp {
    * @param nesting current static lexical level.
    * @return the resulting expression type after the operation is applied
    */ 
+  @Override
   public Type transverse (Environ env, CompilerError err, CodeGenerator gen, int nesting) {
     Type left = getLeft().transverse (env, err, gen, nesting);
     Type right = getRight().transverse (env, err, gen, nesting);

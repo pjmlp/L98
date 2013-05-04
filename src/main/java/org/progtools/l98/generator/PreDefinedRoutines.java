@@ -22,5 +22,5 @@ package org.progtools.l98.generator;
  * Available set of pre-defined functions.
  */
 public enum PreDefinedRoutines {
-    PRINTINT, READINT, PRINTBOOL, READBOOL, PRINTLN
+    PRINT_INT, READ_INT, PRINT_BOOL, READ_BOOL, PRINT_LN
 }

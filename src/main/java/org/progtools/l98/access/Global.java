@@ -37,19 +37,23 @@ public class Global extends Access {
       m_offset = offset;
    }
 
+   @Override
    public void genLoadAccess (CodeGenerator gen, int nesting) throws IOException {
       gen.loadGlobal (m_offset);
    }
 
+   @Override
    public void genLoadAdrAccess (CodeGenerator gen, int nesting) throws IOException {
       gen.loadGlobalA (m_offset);
    }
   
+   @Override
    public void genStoreAccess (CodeGenerator gen, int nesting)  throws IOException {
       gen.storeGlobal (m_offset);
    }
    
 
+   @Override
    public void genCallAccess (CodeGenerator gen, int nesting, int argCount)  throws IOException {
      System.err.println ("Internal Compiler Error, invalid access");
      System.exit (2);

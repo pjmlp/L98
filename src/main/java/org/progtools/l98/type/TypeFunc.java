@@ -19,6 +19,7 @@
 package org.progtools.l98.type;
 import java.util.Deque;
 import java.util.Iterator;
+import java.util.Objects;
 
 
 
@@ -42,9 +43,9 @@ public class TypeFunc extends Type {
   private int m_retOffset;
   
   /**
-   * @param args Lista de tipos a que se referem os argumentos
-   * @param retType Tipo de retorno da funcao
-   * @param retOffset Deslocamento da posicao onde colocar o resultado da funcao    
+   * @param args Types used by the function arguments.
+   * @param retType Return type of the function.
+   * @param retOffset Offset inside the static frame link.
    */
   public TypeFunc (Deque<TypeArg> args, Type retType, int retOffset) {
     m_args = args;
@@ -82,7 +83,7 @@ public class TypeFunc extends Type {
   /**
    * Makes sure two TypeFunc instances can be properly compared.
    * @param other object to compare to.
-   * @returns true if objects are instances of TypeInt
+   * @returns true if objects are instances of TypeFunc
    */
   @Override
   public boolean equals (Object other) { 
@@ -93,6 +94,16 @@ public class TypeFunc extends Type {
     return m_args.equals (((TypeFunc)other).m_args);
     
    }   
+
+  /**
+   * The usal hashing companion method to equals().
+   */
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 17 * hash + Objects.hashCode(this.m_args);
+        return hash;
+    }
 
   
 }

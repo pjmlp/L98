@@ -52,6 +52,7 @@ public class ASTStatList extends ASTStat {
   /**
    * @return Number of 32 bit units to allocate for the variables
    */
+  @Override
   public int alloc () {
     int retValue = 0;
 
@@ -61,7 +62,7 @@ public class ASTStatList extends ASTStat {
        int temp;
 
        while (iter.hasNext()) {
-        stat = (ASTStat) iter.next ();
+        stat = iter.next ();
         temp = stat.alloc ();
 	if (temp > retValue)
 	   retValue = temp;
@@ -84,6 +85,7 @@ public class ASTStatList extends ASTStat {
    * @param nesting current static lexical level.
    * @return true if the code block has a return statement
    */ 
+  @Override
    public boolean transverse (Environ env, CompilerError err, CodeGenerator gen, int nesting, int index) {
      boolean hasReturn = false;
      try {
@@ -96,7 +98,7 @@ public class ASTStatList extends ASTStat {
        }
        
        if (hasReturn && iter.hasNext()) {
-	  stat = (ASTStat) iter.next ();
+	  stat = iter.next ();
 	  err.warning (stat.getLine () + ": Superflus code from this line onwards, return has been found in the previous lines");
        }
      }

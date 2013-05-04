@@ -43,6 +43,7 @@ public class ASTArgVal extends ASTArg {
    * @param index next slot available for variables.
    * @return The L98 type of the expression.
    */  
+  @Override
   public void transverse (Environ env, int nesting, int index) {
      Frame frame = new Frame (nesting, index);
      Attributes attr = new Attributes (getType (), frame, false, true);

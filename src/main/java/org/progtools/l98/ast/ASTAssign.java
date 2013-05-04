@@ -84,6 +84,7 @@ public class ASTAssign extends ASTStat {
    * @param index Pnext slot available for variables.
    * @return true in case the code contains a return instruction
    */
+  @Override
   public boolean transverse (Environ env, CompilerError err, CodeGenerator gen, int nesting, int index) {
      try {
        Object temp  = env.getVal (m_id);

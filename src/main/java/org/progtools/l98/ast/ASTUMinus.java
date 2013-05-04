@@ -44,6 +44,7 @@ public class ASTUMinus extends ASTUnOp {
    * @param nesting current static lexical level.
    * @return the resulting expression type after the operation is applied
    */
+  @Override
   public Type transverse (Environ env, CompilerError err, CodeGenerator gen, int nesting) {
     Type node = getNode().transverse (env, err, gen, nesting);
     Type result;

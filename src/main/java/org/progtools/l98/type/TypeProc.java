@@ -19,6 +19,7 @@
 package org.progtools.l98.type;
 import java.util.Deque;
 import java.util.Iterator;
+import java.util.Objects;
 
 
 
@@ -64,5 +65,12 @@ public class TypeProc extends Type {
     return m_args.equals (((TypeProc)other).m_args);
     
    }   
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 47 * hash + Objects.hashCode(this.m_args);
+        return hash;
+    }
   
 }

@@ -46,6 +46,7 @@ public class ASTMinus extends ASTBinOp {
    * @param nesting current static lexical level.
    * @return The L98 type of the expression.
    */
+  @Override
    public Type transverse (Environ env, CompilerError err, CodeGenerator gen, int nesting) {
     Type left = getLeft().transverse (env, err, gen, nesting);
     Type right = getRight().transverse (env, err, gen, nesting);

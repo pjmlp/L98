@@ -64,6 +64,7 @@ public class ASTIf extends ASTStat {
   /**
    * @return Number of 32 bit units to allocate for the variables
    */
+  @Override
   public int alloc () {
     int retValue;
     
@@ -104,6 +105,7 @@ public class ASTIf extends ASTStat {
    * @param index location for the next variables.
    * @return true if the code block has a return statement
    */ 
+  @Override
   public boolean transverse (Environ env, CompilerError err, CodeGenerator gen, int nesting, int index) {
     boolean hasReturn = false;
      

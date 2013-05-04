@@ -82,6 +82,7 @@ public class ASTFor extends ASTStat {
   /**
    * @return Number of 32 bits words required for variables.
    */
+   @Override
   public int alloc () { return 1 + m_stat.alloc (); }
   
   /**
@@ -114,9 +115,11 @@ public class ASTFor extends ASTStat {
    * @param index Next position available for variable generation.
    * @return true if the code block has a return statement
    */
+   @Override
   public boolean transverse (Environ env, CompilerError err, CodeGenerator gen, int nesting, int index) {
     try {
       Attributes attr = addVarToEnv (env, nesting, index);
+      if (attr != null) {
       Access varAccess = attr.getAccess ();
        
        
@@ -129,12 +132,11 @@ public class ASTFor extends ASTStat {
          err.message (getLine() + ": The initial value has to be an integer");
    
       // generates the code around the loop
-      if (attr != null) {
-         varAccess.genStoreAccess (gen, nesting);
-	 
-	 gen.insLabel (condLabel);
-	 varAccess.genLoadAccess (gen, nesting);
-      }
+        varAccess.genStoreAccess (gen, nesting);
+
+        gen.insLabel (condLabel);
+        varAccess.genLoadAccess (gen, nesting);
+
 	 
       // Performs the validation of the final value in the loop
       Type expToType = m_to.transverse (env, err, gen, nesting);
@@ -142,37 +144,34 @@ public class ASTFor extends ASTStat {
          err.message (getLine() + ": The final value has to be an integer");
 
       // Generate the code required for initializing the loop's variable
-      if (attr != null) {
-	 if (m_direction) // to
-	   gen.leq ();
-	 else // downto
-	   gen.geq ();
-	 
-         gen.jpc (0, endLabel);
-      }
+        if (m_direction) // to
+          gen.leq ();
+        else // downto
+          gen.geq ();
+
+        gen.jpc (0, endLabel);
+      
 
       m_stat.transverse (env, err, gen, nesting, index + 1);
 
       // Generates the code to take care of incrementing/decrementing the loop's variable
-      if (attr != null) {
-         varAccess.genLoadAccess (gen, nesting);
-         gen.load (1);
-	
- 	 if (m_direction) // to
-	   gen.add ();
-	 else // downto
-	   gen.sub ();
+        varAccess.genLoadAccess (gen, nesting);
+        gen.load (1);
 
-	 varAccess.genStoreAccess (gen, nesting);
-         gen.jmp (condLabel);
+        if (m_direction) // to
+          gen.add ();
+        else // downto
+          gen.sub ();
 
-	 gen.insLabel (endLabel);
+        varAccess.genStoreAccess (gen, nesting);
+        gen.jmp (condLabel);
+
+        gen.insLabel (endLabel);
 	 
-      }
-      
+     
       // Removes the loop control variable from the curent environment
       env.removeLast ();
-       
+      }
     }
     catch (IOException e) {
       err.message ("Error while generating the code");

@@ -52,6 +52,7 @@ public class ASTIntConst extends ASTExp {
    * @param nesting current static lexical level.
    * @return the resulting expression type after the operation is applied
    */ 
+  @Override
   public Type transverse (Environ env, CompilerError err, CodeGenerator gen, int nesting) {
     try {
       gen.load (m_val);

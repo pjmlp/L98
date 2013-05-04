@@ -18,7 +18,6 @@
  */
 
 package org.progtools.l98.ast;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -60,7 +59,6 @@ public class ASTDeclList extends ASTDecl {
     try {
        Iterator<ASTDecl> iter = m_decls.iterator ();
        ASTDecl decl;
-       int temp;
 
        while (iter.hasNext()) {
         decl = iter.next ();
@@ -91,6 +89,7 @@ public class ASTDeclList extends ASTDecl {
    * @param index Pnext slot available for variables.
    * @return the next available slot for the following instructions.
    */  
+  @Override
   public int transverse (Environ env, CompilerError err, CodeGenerator gen, int nesting, int index) {
      try {
        Iterator<ASTDecl> iter = m_decls.iterator ();

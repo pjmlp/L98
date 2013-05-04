@@ -43,14 +43,14 @@ public final class EvironFactory {
 
         // Creates the readint function
         subType = new TypeFunc (new LinkedList<TypeArg> (), new TypeInt (), 1);
-        subAccess = new Builtin (PreDefinedRoutines.READINT);
+        subAccess = new Builtin (PreDefinedRoutines.READ_INT);
         attr = new Attributes (subType, subAccess, false, false);
         env.update ("readint", attr);
 
 
         // Creates the readbool function
         subType = new TypeFunc (new LinkedList<TypeArg> (), new TypeBool (), 1);
-        subAccess = new Builtin (PreDefinedRoutines.READBOOL);
+        subAccess = new Builtin (PreDefinedRoutines.READ_BOOL);
         attr = new Attributes (subType, subAccess, false, false);
         env.update ("readbool", attr);
 
@@ -59,7 +59,7 @@ public final class EvironFactory {
         args.add (new TypeArg (false, new TypeInt ()));
 
         subType = new TypeProc (args);
-        subAccess = new Builtin (PreDefinedRoutines.PRINTINT);
+        subAccess = new Builtin (PreDefinedRoutines.PRINT_INT);
         attr = new Attributes (subType, subAccess, false, false);
         env.update ("printint", attr);
 
@@ -68,13 +68,13 @@ public final class EvironFactory {
         args.add (new TypeArg (false, new TypeBool ()));
 
         subType = new TypeProc (args);
-        subAccess = new Builtin (PreDefinedRoutines.PRINTBOOL);
+        subAccess = new Builtin (PreDefinedRoutines.PRINT_BOOL);
         attr = new Attributes (subType, subAccess, false, false);
         env.update ("printbool", attr);
 
         // Creates the println procedure
         subType = new TypeProc (new LinkedList<TypeArg> ());
-        subAccess = new Builtin (PreDefinedRoutines.PRINTLN);
+        subAccess = new Builtin (PreDefinedRoutines.PRINT_LN);
         attr = new Attributes (subType, subAccess, false, false);
         env.update ("println", attr);
 

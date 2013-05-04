@@ -45,24 +45,28 @@ public class Label extends Access {
    }
 
 
+  @Override
    public void genLoadAccess (CodeGenerator gen, int nesting) throws IOException {
       System.err.println ("Internal Compiler Error, invalid access");
       System.exit (1);
    }
 
 
+  @Override
    public void genLoadAdrAccess (CodeGenerator gen, int nesting) throws IOException {
       System.err.println ("Internal Compiler Error, invalid access");
       System.exit (1);
    }
 
 
+  @Override
    public void genStoreAccess (CodeGenerator gen, int nesting)  throws IOException {
       System.err.println ("Internal Compiler Error, invalid access");
       System.exit (1);
    }
 
 
+  @Override
    public void genCallAccess (CodeGenerator gen, int nesting, int argCount)  throws IOException {
      int  dist = nesting - m_level - 1;
 

@@ -62,6 +62,7 @@ public class ASTLet extends ASTStat {
   /**
    * @return Number of 32 bits words required for variables.
    */
+  @Override
   public int alloc () { return m_varValDecls.alloc () + m_funProcDecls.alloc () + m_stat.alloc (); }
 
   /**
@@ -72,6 +73,7 @@ public class ASTLet extends ASTStat {
    * @param nesting current static lexical level.
    * @return true if the code block has a return statement
    */ 
+  @Override
   public boolean transverse (Environ env, CompilerError err, CodeGenerator gen, int nesting, int index)  {
     boolean hasReturn = false;
     try {

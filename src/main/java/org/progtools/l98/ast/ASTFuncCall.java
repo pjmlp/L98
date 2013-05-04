@@ -18,7 +18,6 @@
  */
 package org.progtools.l98.ast;
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.Iterator;
 
 import org.progtools.l98.table.Attributes;
@@ -80,8 +79,8 @@ public class ASTFuncCall extends ASTExp {
     Type expType = null;
      
     while (exps.hasNext()&& args.hasNext()) {
-      exp = (ASTExp) exps.next ();
-      argType = (TypeArg) args.next();
+      exp = exps.next ();
+      argType = args.next();
       
       if (argType.getIsVar ())
 	if (!(exp instanceof ASTId))
@@ -114,16 +113,12 @@ public class ASTFuncCall extends ASTExp {
    * @param index Pnext slot available for variables.
    * @return the next available slot for the following instructions.
    */   
+  @Override
   public Type transverse (Environ env, CompilerError err, CodeGenerator gen, int nesting) {
     Type result = null;
     
     try {
-      Object temp;
-      Enumeration exps, args;
-      ASTExp exp;
-      Type ty, expType;
-      
-      temp = env.getVal (m_id);
+      Object temp = env.getVal (m_id);
       if (temp != null) {
         Attributes attr = (Attributes) temp;
 	

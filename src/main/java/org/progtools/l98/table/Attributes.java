@@ -49,7 +49,7 @@ public class Attributes {
   private boolean m_isArgument;
   
   /**
-   * @param type Tipo do identificador
+   * @param type Identifier's type.
    * @param access Storage type.
    * @param isVar  Used as a variable.
    * @param isArgument Used as parameter declaration.
@@ -62,12 +62,12 @@ public class Attributes {
   }
   
   /**
-   * @return Tipo do identificador
+   * @return Identifier's type.
    */
   public Type getType ()  { return m_type; }
 
   /**
-   * @return Acesso do identificador
+   * @return Storage type.
    */
   public Access getAccess ()  { return m_access; }
 
@@ -78,7 +78,7 @@ public class Attributes {
   
 
   /**
-   * @return Indica se o identificador se refere a um parametro
+   * @return Is the user allowed to change its value. 
    */
   public boolean getIsArgument ()  { return m_isArgument; }
 }

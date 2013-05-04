@@ -211,27 +211,27 @@ public final class X86CodeGenerator implements CodeGenerator {
    public void csp (PreDefinedRoutines subNum) throws IOException {
       m_out.writeComment("CSP " + subNum); 
       switch(subNum){
-          case PRINTINT:
+          case PRINT_INT:
               m_out.writeInstruction ("call print_int"); 
               m_out.writeInstruction ("addl $%d, %%esp", WORD_SIZE); 
               break;
 
-          case READINT:
+          case READ_INT:
               m_out.writeInstruction ("call read_int"); 
               m_out.writeInstruction ("pushl %%eax"); 
               break;
 
-          case PRINTBOOL:
+          case PRINT_BOOL:
               m_out.writeInstruction ("call print_bool"); 
               m_out.writeInstruction ("addl $%d, %%esp", WORD_SIZE); 
               break;
 
-          case READBOOL:
+          case READ_BOOL:
               m_out.writeInstruction ("call read_bool"); 
               m_out.writeInstruction ("pushl %%eax"); 
               break;
 
-          case PRINTLN:
+          case PRINT_LN:
               m_out.writeInstruction ("call print_ln"); 
               break;
               

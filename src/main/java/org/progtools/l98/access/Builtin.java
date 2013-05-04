@@ -36,24 +36,28 @@ public class Builtin extends Access {
   public Builtin (PreDefinedRoutines subrotine) { m_subrotine = subrotine; }
 
 
+  @Override
    public void genLoadAccess (CodeGenerator gen, int nesting) throws IOException {
       System.err.println ("Internal Compiler Error, invalid access");
       System.exit (1);
    }
 
 
+  @Override
    public void genLoadAdrAccess (CodeGenerator gen, int nesting) throws IOException {
       System.err.println ("Internal Compiler Error, invalid access");
       System.exit (1);
    }
 
 
+  @Override
    public void genStoreAccess (CodeGenerator gen, int nesting)  throws IOException {
       System.err.println ("Internal Compiler Error, invalid access");
       System.exit (1);
    }
 
 
+  @Override
    public void genCallAccess (CodeGenerator gen, int nesting, int argCount)  throws IOException {
      gen.csp (m_subrotine);
    }

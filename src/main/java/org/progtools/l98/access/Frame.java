@@ -45,21 +45,25 @@ public class Frame extends Access {
    }
 
    
+   @Override
    public void genLoadAccess (CodeGenerator gen, int nesting) throws IOException {
      gen.loadVar (nesting - m_levels, m_offset);
    }
 
 
+   @Override
    public void genLoadAdrAccess (CodeGenerator gen, int nesting) throws IOException {
      gen.loadVarA (nesting - m_levels, m_offset);
    }
   
 
+   @Override
    public void genStoreAccess (CodeGenerator gen, int nesting)  throws IOException {
       gen.storeVar (nesting - m_levels, m_offset);
    }
 
 
+   @Override
    public void genCallAccess (CodeGenerator gen, int nesting, int argCount)  throws IOException {
      System.err.println ("Internal Compiler Error, invalid access");
      System.exit (2);

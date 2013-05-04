@@ -56,6 +56,7 @@ public class ASTWhile extends ASTStat {
   /**
    * @return Number of 32 bits words required for variables.
    */
+  @Override
   public int alloc () { return m_stat.alloc (); }
   
   

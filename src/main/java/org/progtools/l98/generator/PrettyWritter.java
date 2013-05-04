@@ -69,6 +69,7 @@ final class PrettyWritter implements Closeable {
    }
    
 
+   @Override
     public void close() throws IOException {
         m_out.println ();
         m_out.close ();

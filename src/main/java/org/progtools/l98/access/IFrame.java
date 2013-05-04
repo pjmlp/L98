@@ -34,17 +34,20 @@ public class IFrame extends Frame {
 
    
 
+   @Override
    public void genLoadAccess (CodeGenerator gen, int nesting) throws IOException {
       super.genLoadAccess (gen, nesting);
       gen.loadInd ();
    }
 
 
+   @Override
    public void genLoadAdrAccess (CodeGenerator gen, int nesting) throws IOException {
       super.genLoadAccess (gen, nesting);
    }
   
 
+   @Override
    public void genStoreAccess (CodeGenerator gen, int nesting)  throws IOException {
       super.genLoadAccess (gen, nesting);
       gen.storeInd ();

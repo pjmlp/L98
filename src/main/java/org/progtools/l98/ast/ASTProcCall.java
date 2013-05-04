@@ -19,7 +19,6 @@
 
 package org.progtools.l98.ast;
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.Iterator;
 
 import org.progtools.l98.table.Attributes;
@@ -60,6 +59,7 @@ public class ASTProcCall extends ASTStat {
   /**
    * @return number of 32 bit slots required to store the variable.
    */
+  @Override
   public int alloc () { return 0; }
   
   
@@ -80,8 +80,8 @@ public class ASTProcCall extends ASTStat {
     Type expType = null;
      
     while (exps.hasNext()&& args.hasNext ()) {
-      exp = (ASTExp) exps.next ();
-      argType = (TypeArg) args.next ();
+      exp = exps.next ();
+      argType = args.next ();
       	  
       
       if (argType.getIsVar ())
@@ -117,12 +117,10 @@ public class ASTProcCall extends ASTStat {
    * @param index Pnext slot available for variables.
    * @return the next available slot for the following instructions.
    */   
+  @Override
   public boolean transverse (Environ env, CompilerError err, CodeGenerator gen, int nesting, int index) {
     try {
       Object temp;
-      Enumeration exps, args;
-      ASTExp exp;
-      Type ty, expType;
       
       temp = env.getVal (m_id);
       if (temp != null) {

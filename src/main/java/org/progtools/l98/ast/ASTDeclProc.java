@@ -83,6 +83,7 @@ public class ASTDeclProc extends ASTDecl {
   /**
    * @return number of 32 bit slots required to store the variable.
    */
+  @Override
   public int alloc () { return 0; }
 
    
@@ -102,7 +103,7 @@ public class ASTDeclProc extends ASTDecl {
     
     // Prepares the argument list
     while (iter.hasNext()) {
-      arg = (ASTArg) iter.next ();
+      arg = iter.next ();
       argType = new TypeArg (arg instanceof ASTArgVar, arg.getType ());
        
       typeList.add (argType);
@@ -125,6 +126,7 @@ public class ASTDeclProc extends ASTDecl {
    * @param index Pnext slot available for variables.
    * @return the next available slot for the following instructions.
    */   
+  @Override
   public int transverse (Environ env, CompilerError err, CodeGenerator gen, int nesting, int index) {
     try {
       String procLabel = LabelGenerator.getLabel ();

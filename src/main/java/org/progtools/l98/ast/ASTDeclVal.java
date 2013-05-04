@@ -81,6 +81,7 @@ public class ASTDeclVal extends ASTDecl {
   /**
    * @return Number of 32 units to allocate for the variable.
    */
+  @Override
   public int alloc () { return 1; }
    
    
@@ -111,6 +112,7 @@ public class ASTDeclVal extends ASTDecl {
    * @param index Pnext slot available for variables.
    * @return the next available slot for the following instructions.
    */   
+  @Override
   public int transverse (Environ env, CompilerError err, CodeGenerator gen, int nesting, int index) {
      Attributes attr = null;
      try {

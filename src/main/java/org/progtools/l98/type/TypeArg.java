@@ -18,6 +18,8 @@
  */
 package org.progtools.l98.type;
 
+import java.util.Objects;
+
 
 /**
  * Used to represent arguments of a given type.
@@ -59,6 +61,7 @@ public class TypeArg extends Type {
    * @param other object to compare to.
    * @returns true if objects are instances of TypeArg and deep comparisasion matches.
    */
+  @Override
   public boolean equals (Object other) { 
     
     if (!(other instanceof TypeArg))
@@ -68,4 +71,15 @@ public class TypeArg extends Type {
     
     return m_isVar == otherArg.m_isVar && m_type.equals (otherArg.m_type);
   }   
+
+    /**
+   * The usal hashing companion method to equals().
+   */
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 71 * hash + (this.m_isVar ? 1 : 0);
+        hash = 71 * hash + Objects.hashCode(this.m_type);
+        return hash;
+    }
 }

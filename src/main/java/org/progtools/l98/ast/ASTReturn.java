@@ -49,6 +49,7 @@ public class ASTReturn extends ASTStat {
   /**
    * @return number of 32 bit slots required to store the variable.
    */
+  @Override
   public int alloc () { return 0; }
   
   /**
