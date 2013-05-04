@@ -29,7 +29,12 @@ public final class Pathnames {
      * @return the same pathname with the extension replaced
      */
     public static String changeFileExtension(String filename, String extension) {
-        return filename.substring(filename.lastIndexOf(File.separatorChar) + 1, filename.lastIndexOf('.')) + extension;
+        int index = filename.lastIndexOf('.');
+        if (index > 0) {
+           return filename.substring(filename.lastIndexOf(File.separatorChar) + 1, filename.lastIndexOf('.')) + extension;
+	} else {
+	    return filename;
+	}
     }
     
     
