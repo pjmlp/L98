@@ -40,7 +40,7 @@ public final class Compiler {
     public static void main(String args[]) {
       CompilerError error = new CompilerError ("L'98");
       if (args.length  < 1) {
-        System.out.println ("\nUsage : Compiler [-e] [-s] <filename>");
+        System.out.println ("\nUsage : Compiler [-e] [-k] <filename>");
 	System.out.println ("\n -e -> Additionally to the bytecode, an executable is generated.");
         System.out.println ("\n -k -> When -e is given, the generated Assembly file is not deleted.");
         System.exit (1);
