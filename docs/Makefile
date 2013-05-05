@@ -16,5 +16,5 @@ L98.dvi : L98.tex
 	latex L98.tex
 
 clean:
-	rm -f L98.log L98.aux L98.ps L98.pdf L98.dvi
+	rm -f L98.log L98.aux L98.ps L98.pdf L98.dvi L98.tex~ L98.toc L98.out
 

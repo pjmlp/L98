@@ -1,6 +1,8 @@
 \documentclass[a4paper, 11pt]{report}
 \usepackage[dvipdf]{graphics}
 \usepackage{times}
+\usepackage{listings}
+\usepackage{hyperref}
 %------------------------------------------------------------------
 % Macros used
 \newcommand{\subarg}[1]{\textsl{#1}}
@@ -10,8 +12,10 @@
 \newcommand{\arrow}{\ensuremath{\rightarrow}}
 \newcommand{\switch}[1]{\textsl{#1}}
 
-
 \begin{document}
+\lstset{language=ML}
+\lstset{morekeywords={var, int, bool, upto, downto, for}, morecomment=[s]{/*}{*/}}
+
 \begin{titlepage}
 
 \vspace{2cm}
@@ -20,7 +24,7 @@
 \vspace{3cm}
 \center{Paulo Pinto and Pablo Tavares}
 \center{First release, 24 October 1999}
-\center{Second release, 14 April 2013}
+\center{Second release, 05 May 2013}
 
 \end{titlepage}
 
@@ -39,7 +43,8 @@ So a decision was made to bring the build infrasture, code generation and overra
 code structure to Java 7, while dropping a few uses that were only relevant in Java
 1.1 days.
 
-Additionally the compiler is now GPL licensed.
+Additionally the compiler is now GPL licensed as the older code not written
+by us was removed from the runtime.
 
 \chapter{The L98 Language}
 
@@ -74,17 +79,17 @@ In L98 as in every other language, the assignment is a fundamental
 operation, so it is the first statement to be presented. You can assign
 values to variables like this:
 
-\begin{verbatim}
+\begin{lstlisting}
 someVar    := 2;
 anotherVar := 4 + someVar * 2;
 aboveTen   := anotherVar > 10
-\end{verbatim}
+\end{lstlisting}
 
 Since we must use variables to store the values of expressions, we
 need a way to declare them. In L98 the statement used to declare
 variable is \keyword{let} as shown:
 
-\begin{verbatim}
+\begin{lstlisting}
 let
   var someVar: int := 0
   var anotherVar: int := 0
@@ -94,7 +99,7 @@ in
  anotherVar := 4 + someVar * 2;
  aboveTen   := anotherVar > 10
 end
-\end{verbatim}
+\end{lstlisting}
 
 Note that every variable must be initialized in the declaration. The
 variables can only be used in the \keyword{in}\dots\keyword{end} part
@@ -102,7 +107,7 @@ of the \keyword{let} statement.
 
 The L98 uses lexical scope for the variables, as demostrated by:
 
-\begin{verbatim}
+\begin{lstlisting}
 let
   var someVar: int := 5
 in
@@ -114,7 +119,7 @@ in
  end;
  printint (someVar); /* Prints 5 again */
 end
-\end{verbatim}
+\end{lstlisting}
 
 The routine \emph{printint ()} and several others are described in section \ref{sct:builtin}
 and appendix \ref{sct:routines}.
@@ -132,7 +137,7 @@ optional.
 As an example of the \keyword{if} statement we could make
 the following code:
 
-\begin{verbatim}
+\begin{lstlisting}
 let
   var someVar: int := 0
   var positive: bool := false;
@@ -147,7 +152,7 @@ in
  else
   positive := false
 end
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{Performing Loops}
 The loops are another form of control flow, that is why they are also in
@@ -160,17 +165,17 @@ a loop in which the control variable gets incremented, or decremented.
 The variables used in the \keyword{for} loop don't need to be declared.
 To print all the numbers from 0 to 10 we could write something like this:
 
-\begin{verbatim}
+\begin{lstlisting}
 for i := 0 upto 10 do
   printint (i)
-\end{verbatim}
+\end{lstlisting}
 
 If we want to print in the reverse order, we could change the loop to
 this form:
-\begin{verbatim}
+\begin{lstlisting}
 for i := 10 downto 0 do
   printint (i)
-\end{verbatim}
+\end{lstlisting}
 
 The \keyword{for} loop is only adequate when we know how many
 times to perform the loop. When the loop must be executed while some
@@ -178,7 +183,7 @@ condition holds, the soluction is a \keyword{while} loop. To calculate
 a factorial using a \keyword{while} loop, we could write something like
 this:
 
-\begin{verbatim}
+\begin{lstlisting}
 let
   var value: int := readint ()
   var  temp: int := 0
@@ -190,7 +195,7 @@ in
    );
  printint (temp)
 end
-\end{verbatim}
+\end{lstlisting}
 
 The (\dots) represents a list of statements and is used like the \{\dots\} in C
 or \keyword{begin}\dots\keyword{end} in Pascal.
@@ -203,7 +208,7 @@ the \keyword{let} statement, and can be functions or procedures.
 \subsection{Functions}
 As an example let's declare a function to calculate the square of its argument:
 
-\begin{verbatim}
+\begin{lstlisting}
 let
   var i : int := 0
 
@@ -212,7 +217,7 @@ in
   i := square (2);      /* i contains 4 */
   i := square (3)       /* i contains 9 */ 
 end
-\end{verbatim}
+\end{lstlisting}
 
 As you can see, the functions are called as in C or Pascal by using the
 name of the function followed by a list of arguments enclosed in (\dots). In
@@ -220,7 +225,7 @@ L98 when a function doesn't have any arguments it must be called using an
 empty list. let's write a function that acts as a constant and doesn't have
 arguments:
 
-\begin{verbatim}
+\begin{lstlisting}
 let
   var i : int := 0
 
@@ -228,7 +233,7 @@ let
 in
   i := const ()      /* i contains 5 */
 end
-\end{verbatim}
+\end{lstlisting}
 
 Another thing that you should note, is that in the \keyword{let} statement the
 declarations and variables must appear before the declarations of sub-routines.
@@ -237,7 +242,7 @@ Having the possibility of executing a statement is good, but we want more. How d
 we declare a function with several statements? There are several solutions to this
 problem. One way is to use a statement list :
 
-\begin{verbatim}
+\begin{lstlisting}
 let
   var i : int := 0
 
@@ -245,12 +250,12 @@ let
 in
   i := const ()      /* i contains 5 */
 end
-\end{verbatim}
+\end{lstlisting}
 
 Or we can use a statement that allows multiple statements, as the \keyword{let}. So
 we could arrange the previous code to:
 
-\begin{verbatim}
+\begin{lstlisting}
 let
   var i : int := 0
 
@@ -262,14 +267,14 @@ let
 in
   i := const ()      /* i contains 5 */
 end
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{Procedures}
 
 Using procedures is as easy as using functions, so you could declare a procedure like this:
 
 
-\begin{verbatim}
+\begin{lstlisting}
 let
   var i : int := 0
 
@@ -277,12 +282,12 @@ let
 in
   test ()      /* after the call of test (), i contains 5 */
 end
-\end{verbatim}
+\end{lstlisting}
 
 Of course this routine isn't very helpful, so let's create one that outputs the value of
 an integer followed by a new line:
 
-\begin{verbatim}
+\begin{lstlisting}
 let
   proc printintln (val i: int) = (printint (i); println ())
 in
@@ -292,14 +297,14 @@ in
   printintln (3)  /* Prints 2
                             3 */
 end
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{Multiple Arguments}
 Both functions and procedures allow the use of more than one argument,
 for that you just have to declare them using a \textbf{;} as separator. As
 an example, the sample code for the min function is provided :
 
-\begin{verbatim}
+\begin{lstlisting}
 let
   fun min (val a: int; val b:int) = if a < b then
                                       return a
@@ -308,14 +313,14 @@ let
 in
   printint (min (2,3)) /* Prints 2 */
 end
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{Variable Arguments}
 Sometimes we need to pass an argument that is modified by the subrotine and
 preserves its value after the call. One example of such procedure is one that
 exchanges the contents of its arguments, like the following one:
 
-\begin{verbatim}
+\begin{lstlisting}
 let
   var x: int := 0
   var y: int := 6
@@ -332,7 +337,7 @@ in
   printint (x); /* Prints 6 */
   printint (y)  /* Prints 0 */
 end
-\end{verbatim}
+\end{lstlisting}
 
 The difference is that the arguments are declared with \keyword{var}, as in Pascal.
 
@@ -341,7 +346,7 @@ The difference is that the arguments are declared with \keyword{var}, as in Pasc
 It is possible to use recursion in L98. As an example let's code the
 famous factorial using recursion:
 
-\begin{verbatim}
+\begin{lstlisting}
 let
   func fact (var x: int): int = if x = 0 then
                                   return 1
@@ -351,7 +356,7 @@ let
 in
   printint (fact (2)) /* Prints 2! => 4 */
 end
-\end{verbatim}
+\end{lstlisting}
 
 \section{Builtin Routines}
 \label{sct:builtin}
@@ -492,86 +497,86 @@ The following rotines are available to the L98 programs.
 Displays the value of the argument \subarg{i} to the standard output.
 
 Example
-\begin{verbatim}
+\begin{lstlisting}
  let
    a := 3
  in
   printint (3);  /* Prints 3 */
   printint (a)   /* Prints 3 too */
  end
-\end{verbatim}
+\end{lstlisting}
 
 
 \subsection{printbool}
 
-\begin{verbatim}
+\begin{lstlisting}
  proc printbool (val b: bool)
-\end{verbatim}
+\end{lstlisting}
 Displays the value of the argument \subarg{b} to the standard output.
 If the value \subarg{b} is false then the output is \valconst{false},
 if the value \subarg{b} is true then the output is \valconst{true}.
 
 Example
-\begin{verbatim}
+\begin{lstlisting}
  let
    a := false
  in
   printint (true);  /* Prints true */
   printint (a)      /* Prints false */
  end
-\end{verbatim}
+\end{lstlisting}
 
 
 \subsection{println}
 
-\begin{verbatim}
+\begin{lstlisting}
  proc println
-\end{verbatim}
+\end{lstlisting}
 Prints a new line to the standard output.
 
 Example
-\begin{verbatim}
+\begin{lstlisting}
  let
  in
   println      /* Prints a new line */
  end
-\end{verbatim}
+\end{lstlisting}
 
 
 \subsection{readint}
 
-\begin{verbatim}
+\begin{lstlisting}
  fun readint (): int
-\end{verbatim}
+\end{lstlisting}
 Reads an integer from the input and returns it's value.
 
 
 Example
-\begin{verbatim}
+\begin{lstlisting}
  let
    a := readint ()
  in
   printint (a)      /*  If the user typed 2, */
  end                /* the output will be 2 */
-\end{verbatim}
+\end{lstlisting}
 
 
 \subsection{readbool}
 
-\begin{verbatim}
+\begin{lstlisting}
  fun readbool (): bool
-\end{verbatim}
+\end{lstlisting}
 Reads an boolean from the standard input and returns it's value.
 
 
 Example
-\begin{verbatim}
+\begin{lstlisting}
  let
    a := readbool ()
  in
   printbool (a)      /* If the user typed true, */
  end                /* the output will be true */
-\end{verbatim}
+\end{lstlisting}
 
 %------------------------------------------------------------------
 \chapter{The LVM Description}
@@ -679,8 +684,8 @@ instructions are already explained in the table, but we need to take a good look
 \keyword{CALL}.
 
 
-\begin{figure}[htp]
-\resizebox {10cm}{8cm}{\includegraphics {proc.eps}}
+\begin{figure}
+\includegraphics {proc.eps}
 \caption{Stack layout for procedure calls}
 \label{fig:proc}
 \end{figure}
@@ -820,11 +825,19 @@ to generate proper Assembly code as well.
 Currently an Assembly file is generated in the AT\&T format ending with a \emph{.s}
 extension, similar to the bytecode case.
 
-The runtime is still written in C and is stored as a resource inside the \emph{jar}
+The runtime is fully written in Assembly and is stored as a set of resources inside the \emph{jar}
 file.
 
-During compilation to native code, a temporary file with the runtime code is generated
-and GCC is invoked with it and the generated Assembly file together.
+The file named \emph{l98-rtl.s} contains the full runtime, while the files \emph{l98-linux.s} and
+\emph{l98-windows.s} contain the operating system binding glue.
+
+During compilation to native code, a temporary file with the runtime code is generated, then the
+GNU assembler (AS) and liker (ld) are invoked with all files as input, to generate the final executable.
+
+While the idea to re-write the runtime in Assembly can seem crazy in 2013, the goal was to remove
+the dependency on the C language, while opening the door for a possible bootstrap. See the \ref{sct:ideas}.
+for more information.
+
 
 \section{The builtin routines}
 
@@ -847,7 +860,7 @@ do syscalls, thus removing the need of a C compiler in the process.
 \begin{itemize}  
 \item a JDK compatible with Java version 7 or higher;
 \item Maven version 3 or higher;
-\item GNU binutils and GCC (required for native code generation).
+\item GNU binutils for native code generation (On Windows mingw is advisable).
 \end{itemize}
 
 To compile the compiler, execute the following steps:
@@ -881,13 +894,41 @@ This way an \emph{aSourceFile.s} file is created with the LVM code. If the
 An executable file named \emph{aSourceFile} is generated.
 
 If you want the intermediate Assembly file to be left on the system, you should
-use the \switch{-s} switch as well.
+use the \switch{-k} switch as well.
 
+On Windows due to the non standard location where the binutils might be installed, there is
+an extra switch, \switch{-L}, to provide the location of the import libraries used by ld.
+
+%-------------------------------------------------------------------------
+\chapter{Ideas for future work}
+\label{sct:ideas}
+
+These ideas are a way for interested developers to carry on work on this compiler.
+
+\begin{itemize}
+\item Add a string data type;
+
+\item Add support for arrays;
+
+\item Add support for doing syscalls directly to the operating system;
+
+\item When syscalls support is added, replace \emph{l98-rtl.s} by code written in L98;
+
+\item Add the ability to include files;
+
+\item With file inclusion and syscalls support, the runtime can be fully written in L98 and the
+Assembly files can be dropped;
+
+\item Go one step further and add modules instead of simple file inclusion;
+
+\item Your own idea...
+
+\end{itemize}
 
 %-------------------------------------------------------------------------
 \chapter{License}
 
- This release is under the GNU GPL v2.
+ This release is under the GNU GPL v2. Please read the file named COPYING for the full text.
 
 %-------------------------------------------------------------------------
 

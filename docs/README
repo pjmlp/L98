@@ -5,5 +5,4 @@ arguments are :
 
   make pdf -> To build the PDF documentation format
 
-  make
-  make all -> Build both documentation formats
+  make, make all -> Build both documentation formats
