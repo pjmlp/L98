@@ -37,8 +37,9 @@ public class NativeCodeGeneration {
      * Compiles the generated code into native code.
      * @param fileName Name of the destination file.
      * @param asmFile File that contains the generated assembly code.
+     * @param linkPath Extra link paths for the native code linker
      */
-      public static void generateExecutable (String fileName, CompilerError error) {
+      public static void generateExecutable (String fileName, CompilerError error, String linkPath) {
         String exeName = getExecutableName(fileName);
         List<File> files = new ArrayList<>(3);
         files.add(new File(fileName));
@@ -46,9 +47,10 @@ public class NativeCodeGeneration {
         try {
             Runtime run = Runtime.getRuntime ();
             files.add(getRuntimeFile("/l98-rtl.s"));
-            files.add(getRuntimeFile(String.format("/l98-%s.s", System.getProperty("os.name"))));
+            String osName = System.getProperty("os.name").toLowerCase().split(" ")[0];
+            files.add(getRuntimeFile(String.format("/l98-%s.s", osName)));
             assembleFiles(run, files);
-            linkFiles(run, exeName, files);
+            linkFiles(run, exeName, files, linkPath);
         }
         catch (Exception ex) {
           error.message ("Error while generating executable", ex);
@@ -88,17 +90,24 @@ public class NativeCodeGeneration {
      * Links the give file into an object file.
      * @param run The runtime to execute the assembler from.
      * @param files The files to assemble.
+     * @param linkPath Extra link paths for the native code linker
      * @throws If any error happened while lauching the extern processes
      */
-     private static void linkFiles (Runtime run, String executableName, List<File> files) throws Exception {
+     private static void linkFiles (Runtime run, String executableName, List<File> files, String linkPath) throws Exception {
          StringBuilder cmd = new StringBuilder(1024); // 1kb should be enough
          
-         cmd.append("ld -o ");
-         cmd.append(executableName);
-         cmd.append(" ");
+         cmd.append("ld  ");
+         cmd.append(getLinkerOptions());
+         cmd.append(getExecutableName(executableName));
+         if (!linkPath.isEmpty()) {
+             cmd.append(" -L");
+             cmd.append(linkPath);
+         }
          for (File fd: files) {
+            cmd.append(" ");
             cmd.append(fd.toString().replace(".s", ".o"));
          }
+         cmd.append(getSystemLibs());
          
         Process proc = run.exec (cmd.toString());
         proc.waitFor ();
@@ -113,6 +122,23 @@ public class NativeCodeGeneration {
       */
      private static String getExecutableName(String filename) {
          String osName = System.getProperty("os.name");
-         return Pathnames.changeFileExtension(filename, (osName.equals("Windows") ? ".exe" : ""));
+         return Pathnames.changeFileExtension(filename, (osName.startsWith("Windows") ? ".exe" : ""));
+     }
+
+     /**
+      * @return  The set of linker options depending on the platform
+      */
+     private static String getLinkerOptions() {
+         String osName = System.getProperty("os.name");
+         return (osName.startsWith("Windows") ? " -o " : "-melf_i386 -o ");
+     }
+
+     /**
+      * This method cannot be made part of getLinkerOptions() due to ordering issues on Windows.
+      * @return  The set of libraries to link to.
+      */
+     private static String getSystemLibs() {
+         String osName = System.getProperty("os.name");
+         return (osName.startsWith("Windows") ? " -lkernel32 " : "");
      }
 }

@@ -20,10 +20,12 @@ rem Boston, MA 02111-1307, USA.
 setlocal
 
 for /f %%i in ('where java') do set JVM=%%i
-if not exist %JVM% goto NOJVM
+if not exist "%JVM%" goto NOJVM
 
 set L98C="%L98C_HOME%\L98-0.0.1-SNAPSHOT.jar"
-if not exist %L98C% goto NOL98C
+if not exist "%L98C%" goto NOL98C
+
+if not exist "%LD_LIBS%" goto NOLD
 
 goto COMPILE
 
@@ -35,5 +37,11 @@ goto COMPILE
     echo Please set the L98C_HOME variable to the directory location
     exit /b 1
     
+:NOL98C
+    echo Please set the LD_LIBS variable to the directory location of binutils system libraries
+    exit /b 1    
+    
+    set LD_LIBS=c:\qt\qt5.0.1\tools\mingw\lib
+    
 :COMPILE
-%JVM% -jar %L98C% %1 %2 %3 %4
+"%JVM%" -jar "%L98C%" -L%LD_LIBS% %1 %2 %3 %4
