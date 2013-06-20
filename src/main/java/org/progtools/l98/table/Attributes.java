@@ -72,13 +72,13 @@ public class Attributes {
   public Access getAccess ()  { return m_access; }
 
   /**
-   * @return Indica se o identificador e' uma variavel
+   * @return true if the user allowed to change its value. 
    */
   public boolean getIsVar ()  { return m_isVar; }
   
 
   /**
-   * @return Is the user allowed to change its value. 
+   * @return true if the identifier represents a subroutine parameter.
    */
   public boolean getIsArgument ()  { return m_isArgument; }
 }
