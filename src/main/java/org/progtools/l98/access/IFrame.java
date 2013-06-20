@@ -22,8 +22,7 @@ import java.io.IOException;
 import org.progtools.l98.generator.CodeGenerator;
 
 /**
- * Classe que representa armazenamento de vari�veis e constantes globais no
- * registo de activa�ao
+ * Class that represents the storage of variables and constants on the activation frame.
  */
 public class IFrame extends Frame {
    /**
