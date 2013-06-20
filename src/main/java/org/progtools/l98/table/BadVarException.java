@@ -22,11 +22,8 @@ package org.progtools.l98.table;
  * Thrown when an identifier is not found in the symbol table.
  */
 public class BadVarException extends java.lang.Exception {
-  public String m_id;
-  
-  public BadVarException (String id) { m_id = id;}
-  
-    
-}
 
-  
+    public BadVarException(String id) {
+        super(id);
+    }
+}

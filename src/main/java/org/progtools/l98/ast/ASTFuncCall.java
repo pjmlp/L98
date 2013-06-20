@@ -82,7 +82,7 @@ public class ASTFuncCall extends ASTExp {
       exp = exps.next ();
       argType = args.next();
       
-      if (argType.getIsVar ())
+      if (argType.isVar ())
 	if (!(exp instanceof ASTId))
 	  err.message (getLine () + ": The " + argCount + " parameter must be a variable");
         else {
@@ -142,7 +142,7 @@ public class ASTFuncCall extends ASTExp {
       
     }
     catch (BadVarException e) {
-      err.message (getLine () + ": The identifier " + e.m_id + "is not declared");
+      err.message (getLine () + ": The identifier " + e.getMessage() + "is not declared");
     }
     catch (IOException e) {
       err.message ("Error while generating code");

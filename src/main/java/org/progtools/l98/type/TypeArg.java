@@ -54,7 +54,7 @@ public class TypeArg extends Type {
   /**
    * @return  true if this instance represents a variable argument.
    */
-  public boolean getIsVar ()  { return m_isVar; }
+  public boolean isVar ()  { return m_isVar; }
     
   /**
    * Makes sure two TypeArg instances can be properly compared.

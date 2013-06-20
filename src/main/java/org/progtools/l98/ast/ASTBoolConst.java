@@ -52,6 +52,7 @@ public class ASTBoolConst extends ASTExp {
    * @param nesting current static lexical level.
    * @return the type resulting from the expression. always an instance of TypeBool
    */  
+  @Override
   public Type transverse (Environ env, CompilerError err, CodeGenerator gen, int nesting) {
     try {
       gen.load (m_val ? 1 : 0);

@@ -53,6 +53,7 @@ public class ASTDeclList extends ASTDecl {
   /**
    * @return Number of 32 bit slots to allocate
    */
+  @Override
   public int alloc () {
     int retValue = 0;
 

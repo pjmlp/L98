@@ -61,12 +61,6 @@ public class ASTArgList extends ASTNode {
   public Iterator<ASTArg> elementsBackward () { return m_args.descendingIterator(); }  
   
   /**
-   * Adiciona ao ambiente corrente as declaracoes existentes na lista
-   * @param env     Ambiente corrente
-   * @param nesting Profundidade a que foi declarada a subrotina
-   */
-  
-  /**
    * Adds to the current environment the declarations existing in the list.
    * @param env current environment.
    * @param nesting current static lexical level.

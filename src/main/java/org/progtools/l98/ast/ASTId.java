@@ -75,7 +75,7 @@ public class ASTId extends ASTExp {
        }
     }
     catch (BadVarException e) {
-       err.message (getLine() + ": The variable " + e.m_id + " is not declared");
+       err.message (getLine() + ": The variable " + e.getMessage() + " is not declared");
     }
     catch (IOException e) {
        err.message ("Error while generating code");
@@ -99,14 +99,14 @@ public class ASTId extends ASTExp {
        Attributes attr = (Attributes) env.getVal (m_name);
        result = attr.getType ();
        
-       if (!attr.getIsVar ())
+       if (!attr.isVar ())
    	 err.message (getLine() + ": " + m_name + " is not a variable");
        else
          // Generates the code for the variable's access
          attr.getAccess ().genLoadAdrAccess (gen, nesting);
     }
     catch (BadVarException e) {
-       err.message (getLine() + ": The variable " + e.m_id + " is not declared");
+       err.message (getLine() + ": The variable " + e.getMessage() + " is not declared");
        result = null;
     }
     catch (IOException e) {

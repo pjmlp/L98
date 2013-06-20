@@ -55,6 +55,7 @@ public class ASTAssign extends ASTStat {
   /**
    * @return number of 32bit units to allocate for the variable.
    */
+  @Override
   public int alloc () { return 0; }
    
    
@@ -94,14 +95,14 @@ public class ASTAssign extends ASTStat {
 	   Attributes attr = (Attributes) temp;
 	   
 	   if (typeCheck (attr.getType (), expType, err))
-	     if (!attr.getIsVar ())
+	     if (!attr.isVar ())
 	       err.message (getLine() + ": " + m_id + " is not a variable");
 	     else
 	       attr.getAccess ().genStoreAccess (gen, nesting);
 	}
      }
      catch (org.progtools.l98.table.BadVarException e) {
-	err.message (getLine() + ": " + e.m_id + " is not declared");
+	err.message (getLine() + ": " + e.getMessage() + " is not declared");
      }
      catch (IOException e) {
       err.message ("Error while generating code");

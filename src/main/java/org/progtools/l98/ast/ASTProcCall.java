@@ -84,7 +84,7 @@ public class ASTProcCall extends ASTStat {
       argType = args.next ();
       	  
       
-      if (argType.getIsVar ())
+      if (argType.isVar ())
 	if (!(exp instanceof ASTId))
 	  err.message (getLine () + ": The " + argCount + " parameter must be a variable");
         else {
@@ -139,7 +139,7 @@ public class ASTProcCall extends ASTStat {
       
     }
     catch (BadVarException e) {
-      err.message (getLine () + ": The identifier " + e.m_id + "is not declared");
+      err.message (getLine () + ": The identifier " + e.getMessage() + "is not declared");
     }
     catch (IOException e) {
       err.message ("Error while generating code");

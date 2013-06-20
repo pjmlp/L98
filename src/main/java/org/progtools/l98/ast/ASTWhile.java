@@ -61,16 +61,16 @@ public class ASTWhile extends ASTStat {
   
   
   /**
-   * Verifica se o tipo da expressao da condicao e' valida
-   * @param expType Tipo da expressao da condicao
-   * @param err Classe que serve para reportar erros
-   * @return true se a expressao for do tipo booleano
-   */
+   * Validates if the expression type is valid.
+   * @param expType Type of the conditional expression
+   * @param err used for error messages.
+   * @return true if the expression is boolean
+   */  
   private boolean typeCheck (Type expType, CompilerError err) {
     boolean retValue = true;
     
     if (expType != null && !(expType instanceof TypeBool))
-      err.message (getLine() + ": Condicao Invalida no while");
+      err.message (getLine() + ": condition not valid on while");
     
     return retValue;
   }
@@ -83,6 +83,7 @@ public class ASTWhile extends ASTStat {
    * @param nesting current static lexical level.
    * @return true if the code block has a return statement
    */ 
+  @Override
   public boolean transverse (Environ env, CompilerError err, CodeGenerator gen, int nesting, int index) {
     try {
       String condLabel = LabelGenerator.getLabel ();  // label for the loop condition

@@ -69,7 +69,7 @@ public class ASTReturn extends ASTStat {
     else {
       TypeFunc fType = (TypeFunc) funcType;
       if (!fType.getReturnType ().equals (expType)) {
-	err.message (getLine () + ": the type of the return expression is not compatible with the functio's result");
+	err.message (getLine () + ": the type of the return expression is not compatible with the function's result");
 	retValue = false;
       }
     }
@@ -86,6 +86,7 @@ public class ASTReturn extends ASTStat {
    * @param index Pnext slot available for variables.
    * @return the next available slot for the following instructions.
    */ 
+  @Override
   public boolean transverse (Environ env, CompilerError err, CodeGenerator gen, int nesting, int index) {
     boolean hasReturn = true;
      

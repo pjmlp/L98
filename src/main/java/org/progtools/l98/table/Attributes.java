@@ -74,11 +74,11 @@ public class Attributes {
   /**
    * @return true if the user allowed to change its value. 
    */
-  public boolean getIsVar ()  { return m_isVar; }
+  public boolean isVar ()  { return m_isVar; }
   
 
   /**
    * @return true if the identifier represents a subroutine parameter.
    */
-  public boolean getIsArgument ()  { return m_isArgument; }
+  public boolean isArgument ()  { return m_isArgument; }
 }

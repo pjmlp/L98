@@ -131,7 +131,7 @@ public class ASTDeclVar extends ASTDecl {
       }
     }
     catch (IOException e) {
-      err.message ("Erro ao gerar o codigo");
+      err.message ("Error while generating code");
     }
  
     env.update (m_id, attr);

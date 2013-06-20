@@ -42,7 +42,7 @@ public class Environ {
   /**
    * Environment being managed.
    */
-  private Map<String, Stack> m_vars;
+  private Map<String, Stack<Element>> m_vars;
   
   /**
    * Identifiers added to the environment.
@@ -62,10 +62,10 @@ public class Environ {
    * @param value Current associated value
    */
   public void update (String id, Object value) { 
-   Stack temp = m_vars.get (id);
+   Stack<Element> temp = m_vars.get (id);
 
    if (temp == null) {
-     temp = new Stack ();
+     temp = new Stack<> ();
      m_vars.put (id, temp);
    }
    
@@ -91,13 +91,13 @@ public class Environ {
    */
   public Object getVal (String id) throws BadVarException {
     Element elem;
-    Stack elems = m_vars.get (id);
+    Stack<Element> elems = m_vars.get (id);
 
     if (elems == null)
       throw new BadVarException(id);
     
     for (int i = elems.size();i > 0; i--) {
-      elem = (Element) elems.elementAt(i-1);
+      elem = elems.elementAt(i-1);
       if (elem.m_id.equals(id))
         return elem.m_value;
     }
