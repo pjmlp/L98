@@ -26,18 +26,18 @@ import org.progtools.l98.generator.CodeGenerator;
  */
 public class Label extends Access {
    /**
-    * Nivel lexical onde a subrotina a que pertence a etiqueta esta declarada
+    * Lexical level of the subroutine that owns this label.
     */
   private int m_level;
    
    /**
-    * Etiqueta do ponto de entrada
+    * Entry point label for a subroutine.
     */
    private String m_label;
    
    /**
-    * @param level Nivel lexical de quando a subrotina foi declarada
-    * @param label  Etiqueta do ponto de entrada
+    * @param level Lexical level of the subroutine that owns this label.
+    * @param label  Subroutine entry point.
     */
    public Label (int level, String label) {
       m_level = level;
@@ -77,7 +77,7 @@ public class Label extends Access {
   
 
    /**
-    * @return Nivel lexical onde a subrotina a que pertence a etiqueta esta declarada
+    * @return Lexical level of the subroutine that owns this label.
     */
    public int getLevel () {
       return m_level;
@@ -85,7 +85,7 @@ public class Label extends Access {
 
   
    /**
-    * @return Etiqueta do ponto de entrada
+    * @return Label used for the entry point.
     */
    public String getLabel () {
       return m_label;
