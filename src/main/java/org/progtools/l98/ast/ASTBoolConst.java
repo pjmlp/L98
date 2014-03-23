@@ -33,7 +33,7 @@ public class ASTBoolConst extends ASTExp {
  /**
   * Valor da constante
   */
-  private boolean m_val;
+  private final boolean m_val;
 
   /**
    * @param line where the expression was found.

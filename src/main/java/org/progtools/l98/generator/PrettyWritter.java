@@ -30,12 +30,12 @@ final class PrettyWritter implements Closeable {
    /**
     * Output destination.
     */
-   private PrintWriter m_out;
+   private final PrintWriter m_out;
    
    /**
     * Indentation level used when no labels are written.
     */
-   private int m_indent;
+   private final int m_indent;
 
 
    /**
@@ -46,7 +46,7 @@ final class PrettyWritter implements Closeable {
    /**
     * 
     */
-   private CommentFormat m_commentStyle;
+   private final CommentFormat m_commentStyle;
    
    
    /**

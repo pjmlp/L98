@@ -42,13 +42,13 @@ public class Environ {
   /**
    * Environment being managed.
    */
-  private Map<String, Stack<Element>> m_vars;
+  private final Map<String, Stack<Element>> m_vars;
   
   /**
    * Identifiers added to the environment.
    * The stack allows for an easy way to remove them in the inverse order.
    */
-  private Stack<String>    m_ids;
+  private final Stack<String>    m_ids;
 
   Environ () { 
     m_vars = new HashMap<>();
@@ -86,7 +86,7 @@ public class Environ {
   /**
    * Gets the value mapped to the given identifier
    * @param id Name
-   * @returns Associated value
+   * @return Associated value
    * @exception BadVarException If the identifier is not valid
    */
   public Object getVal (String id) throws BadVarException {

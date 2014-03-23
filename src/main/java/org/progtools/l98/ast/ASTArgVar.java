@@ -42,7 +42,6 @@ public class ASTArgVar extends ASTArg {
    * @param env current environment.
    * @param nesting current static lexical level.
    * @param index next slot available for variables.
-   * @return The L98 type of the expression.
    */  
   @Override
   public void transverse (Environ env, int nesting, int index) {

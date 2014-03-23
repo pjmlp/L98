@@ -38,12 +38,12 @@ public class ASTProcCall extends ASTStat {
    /**
     * Argument list used in the call.
     */
-  private ASTElementList m_elementList;
+  private final ASTElementList m_elementList;
    
    /**
     * Procedure's name.
     */
-  private String m_id;
+  private final String m_id;
 
  /**
   * @param line where the expression was found.

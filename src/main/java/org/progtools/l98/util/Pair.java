@@ -27,12 +27,12 @@ public class Pair {
    /**
     * First element.
     */
-   private Object m_left;
+   private final Object m_left;
 
    /**
     * Second element.
     */
-   private Object m_right;
+   private final Object m_right;
    
    /**
     * @param left first element.

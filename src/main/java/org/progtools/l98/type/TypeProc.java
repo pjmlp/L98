@@ -30,7 +30,7 @@ public class TypeProc extends Type {
   /**
    * Data types used by the arguments.
    */
-  private Deque<TypeArg> m_args;
+  private final Deque<TypeArg> m_args;
   
   /**
    * @param args List of types used by the procedure arguments.

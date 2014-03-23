@@ -37,12 +37,12 @@ public class ASTFuncCall extends ASTExp {
    /**
     * Argument list used in the call.
     */
-  private ASTElementList m_elementList;
+  private final ASTElementList m_elementList;
    
    /**
     * Function's name.
     */
-  private String m_id;
+  private final String m_id;
 
  /**
   * @param line where the expression was found.
@@ -110,7 +110,6 @@ public class ASTFuncCall extends ASTExp {
    * @param err used for error messages.
    * @param gen code generator.
    * @param nesting current static lexical level.
-   * @param index Pnext slot available for variables.
    * @return the next available slot for the following instructions.
    */   
   @Override

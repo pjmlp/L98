@@ -29,24 +29,24 @@ public class Attributes {
   /**
    * Identifier's type.
    */
-  private Type m_type;
+  private final Type m_type;
 
   /**
    * Indentifier's storage type.
    */
-  private Access m_access;
+  private final Access m_access;
 
   
   /**
    * Is the user allowed to change its value. 
    */
-  private boolean m_isVar;
+  private final boolean m_isVar;
 
   
   /**
    * Used as part of a function's argument.
    */
-  private boolean m_isArgument;
+  private final boolean m_isArgument;
   
   /**
    * @param type Identifier's type.

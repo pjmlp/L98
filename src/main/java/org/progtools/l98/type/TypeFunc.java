@@ -30,17 +30,17 @@ public class TypeFunc extends Type {
   /**
    * Data types used by the arguments.
    */
-  private Deque<TypeArg> m_args;
+  private final Deque<TypeArg> m_args;
   
   /**
    * Data types used by the resulted result.
    */
-  private Type m_retType;
+  private final Type m_retType;
 
   /**
    * Offset where to store the function's result on the stack.
    */
-  private int m_retOffset;
+  private final int m_retOffset;
   
   /**
    * @param args Types used by the function arguments.

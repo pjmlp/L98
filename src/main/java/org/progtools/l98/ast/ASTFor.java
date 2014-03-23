@@ -38,28 +38,28 @@ public class ASTFor extends ASTStat {
   /**
    * Loop variable.
    */
-   private String m_id;
+   private final String m_id;
    
   /**
    * Initial loop expression.
    */
-  private ASTExp m_from;
+  private final ASTExp m_from;
 
   /**
    * Limit loop expression.
    */
-  private ASTExp m_to;
+  private final ASTExp m_to;
 
   /**
    * counting direction.
    */
-  private boolean m_direction;
+  private final boolean m_direction;
 
    
   /**
    * code block.
    */
-  private ASTStat m_stat;
+  private final ASTStat m_stat;
    
 
  /**

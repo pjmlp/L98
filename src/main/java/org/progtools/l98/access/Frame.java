@@ -28,12 +28,12 @@ public class Frame extends Access {
    /**
     *  Level where the variable was declared.
     */
-   private int m_levels;
+   private final int m_levels;
 
    /**
     * The offset inside the activation frame.
     */
-   private int m_offset;
+   private final int m_offset;
    
    /**
     * @param levels level where the variable was declared.

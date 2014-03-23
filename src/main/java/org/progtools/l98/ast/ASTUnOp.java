@@ -25,7 +25,7 @@ public abstract class ASTUnOp extends ASTExp {
   /**
    * child node.
    */
-  private ASTExp m_node;
+  private final ASTExp m_node;
 
   /**
    * @param line where the expression was found.

@@ -36,7 +36,7 @@ public class NativeCodeGeneration {
     /**
      * Compiles the generated code into native code.
      * @param fileName Name of the destination file.
-     * @param asmFile File that contains the generated assembly code.
+     * @param error Used to communicate error messages to the user.
      * @param linkPath Extra link paths for the native code linker
      */
       public static void generateExecutable (String fileName, CompilerError error, String linkPath) {

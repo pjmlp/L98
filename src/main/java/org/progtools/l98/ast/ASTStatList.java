@@ -33,7 +33,7 @@ public class ASTStatList extends ASTStat {
    /**
     * Instructions
     */
-  private List<ASTStat> m_stats;
+  private final List<ASTStat> m_stats;
 
   /**
    * @param line where the expression was found.

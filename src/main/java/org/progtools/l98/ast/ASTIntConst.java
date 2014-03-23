@@ -33,7 +33,7 @@ public class ASTIntConst extends ASTExp {
  /**
   * Constants value
   */
-  private int m_val;
+  private final int m_val;
 
  /**
   * @param line where the expression was found.

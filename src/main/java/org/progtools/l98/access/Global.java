@@ -28,7 +28,7 @@ public class Global extends Access {
    /**
     * Offset at the global memory space.
     */
-   private int m_offset;
+   private final int m_offset;
    
    /**
     * @param offset Offset in the global memory space.

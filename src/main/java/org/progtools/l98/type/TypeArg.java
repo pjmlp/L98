@@ -28,12 +28,12 @@ public class TypeArg extends Type {
   /**
    * Indicates if the argument was given by reference.
    */
-  private boolean m_isVar;
+  private final boolean m_isVar;
 
   /**
    * The data type used to represent the argument.
    */
-  private Type m_type;
+  private final Type m_type;
 
   /**
    * @param isVar true if the argument is given by reference.

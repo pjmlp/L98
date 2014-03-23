@@ -26,7 +26,7 @@ public abstract class ASTNode {
   /**
    * line number to be used in error messages.
    */
-  private int m_line;
+  private final int m_line;
 
   /**
    * @param line where the expression was found.

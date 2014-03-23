@@ -37,7 +37,7 @@ public class ASTId extends ASTExp {
    /**
     * Identifier's name.
     */
-  private String m_name;
+  private final String m_name;
 
  /**
   * @param line where the expression was found.

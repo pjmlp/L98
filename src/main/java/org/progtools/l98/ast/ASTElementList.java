@@ -31,8 +31,11 @@ public class ASTElementList extends ASTNode{
   /**
    * Expressions
    */
-  private Deque<ASTExp> m_elements;
+  private final Deque<ASTExp> m_elements;
 
+  /**
+   * Standard constructor
+   */
   public ASTElementList () {
     super (0);
     m_elements = new LinkedList<> ();

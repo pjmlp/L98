@@ -34,12 +34,12 @@ public class ASTAssign extends ASTStat {
   /**
    * lvalue
    */
-  private String m_id;
+  private final String m_id;
    
    /**
     * expression to be assigned.
     */
-  private ASTExp m_exp;
+  private final ASTExp m_exp;
 
   /**
    * @param line  where the expression was found.

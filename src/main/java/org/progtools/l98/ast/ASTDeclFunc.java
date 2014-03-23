@@ -41,22 +41,22 @@ public class ASTDeclFunc extends ASTDecl {
   /**
    * Function's name.
    */
-  private String m_id;
+  private final String m_id;
 
   /**
    * Argument list.
    */
-  private ASTArgList m_args;
+  private final ASTArgList m_args;
    
   /**
    * Statements bound to this function.
    */
-  private ASTStat m_stat;
+  private final ASTStat m_stat;
    
   /**
    * Function's type.
    */
-  private Type m_type;
+  private final Type m_type;
 
  /**
   * @param line where the expression was found.

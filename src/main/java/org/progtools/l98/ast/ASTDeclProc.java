@@ -40,17 +40,17 @@ public class ASTDeclProc extends ASTDecl {
   /**
    * Procedure's name.
    */
-  private String m_id;
+  private final String m_id;
 
   /**
    * Argument list.
    */
-  private ASTArgList m_args;
+  private final ASTArgList m_args;
    
   /**
    * Statements bound to this procedure.
    */
-  private ASTStat m_stat;
+  private final ASTStat m_stat;
 
  /**
   * @param line where the expression was found.

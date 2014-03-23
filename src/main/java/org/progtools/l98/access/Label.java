@@ -28,12 +28,12 @@ public class Label extends Access {
    /**
     * Lexical level of the subroutine that owns this label.
     */
-  private int m_level;
+  private final int m_level;
    
    /**
     * Entry point label for a subroutine.
     */
-   private String m_label;
+   private final String m_label;
    
    /**
     * @param level Lexical level of the subroutine that owns this label.

@@ -34,12 +34,12 @@ public class ASTWhile extends ASTStat {
   /**
    * Instructions part of the while loop.
    */
-  private ASTStat m_stat;
+  private final ASTStat m_stat;
    
   /**
    * Expression for the loop condition .
    */
-  private ASTExp m_exp;
+  private final ASTExp m_exp;
 
     
  /**

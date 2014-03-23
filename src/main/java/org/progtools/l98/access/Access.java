@@ -30,6 +30,7 @@ public abstract class Access {
     * Generates the required code for read access.
     * @param gen  code generator used for the real code.
     * @param nesting current frame nesting level
+    * @throws IOException if an error happens while writing code to the file system.
     */
    public abstract void genLoadAccess (CodeGenerator gen, int nesting) throws IOException;
 
@@ -37,6 +38,7 @@ public abstract class Access {
     * Generates the required code for read access of a memory address.
     * @param gen code generator used for the real code.
     * @param nesting current frame nesting level
+    * @throws IOException if an error happens while writing code to the file system.
     */
    public abstract void genLoadAdrAccess (CodeGenerator gen, int nesting) throws IOException;
   
@@ -44,6 +46,7 @@ public abstract class Access {
     * Generates the required code for write access.
     * @param gen code generator used for the real code.
     * @param nesting current frame nesting level
+    * @throws IOException if an error happens while writing code to the file system.
     */
    public abstract void genStoreAccess (CodeGenerator gen, int nesting) throws IOException;
   
@@ -52,6 +55,7 @@ public abstract class Access {
     * @param gen code generator used for the real code.
     * @param nesting current frame nesting level.
     * @param argCount number of required arguments.
+    * @throws IOException if an error happens while writing code to the file system.
     */
    public abstract void genCallAccess (CodeGenerator gen, int nesting, int argCount)  throws IOException;
 }

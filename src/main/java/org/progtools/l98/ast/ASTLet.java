@@ -33,17 +33,17 @@ public class ASTLet extends ASTStat {
    /**
     * Variables and constants declared in the block.
     */
-  private ASTDeclList m_varValDecls;
+  private final ASTDeclList m_varValDecls;
 
    /**
     * Functions and procedures declared in the block.
     */
-  private ASTDeclList m_funProcDecls;
+  private final ASTDeclList m_funProcDecls;
    
    /**
     *  Code statements used in the block.
     */
-  private ASTStat     m_stat;
+  private final ASTStat     m_stat;
 
    
  /**

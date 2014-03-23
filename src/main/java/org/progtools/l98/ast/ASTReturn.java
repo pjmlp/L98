@@ -34,7 +34,7 @@ public class ASTReturn extends ASTStat {
    /**
     * Expression to return as value from the statement.
     */
-  private ASTExp m_exp;
+  private final ASTExp m_exp;
 
   /**
    * @param line where the expression was found.

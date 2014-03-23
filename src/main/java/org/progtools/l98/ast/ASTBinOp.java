@@ -25,12 +25,12 @@ public abstract class ASTBinOp extends ASTExp {
   /**
    * left tree structure
    */
-  private ASTExp m_left;
+  private final ASTExp m_left;
 
   /**
    * right tree structure
    */
-  private ASTExp m_right;
+  private final ASTExp m_right;
 
   /**
    * @param line where the expression was found.

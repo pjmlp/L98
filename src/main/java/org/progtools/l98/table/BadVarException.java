@@ -23,6 +23,10 @@ package org.progtools.l98.table;
  */
 public class BadVarException extends java.lang.Exception {
 
+    /**
+     * Constructs the exception.
+     * @param id  The variable that wasn't found in the symbol table.
+     */
     public BadVarException(String id) {
         super(id);
     }

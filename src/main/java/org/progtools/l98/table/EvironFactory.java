@@ -34,6 +34,9 @@ import org.progtools.l98.type.TypeProc;
  * Creates an pre-configured environment for L98.
  */
 public final class EvironFactory {
+    /**
+     * @return  A new environment initialized with the pre-defined functions/procedures.
+     */
     public static Environ getEnvironment() {
         Environ env = new Environ (); 
         Deque<TypeArg> args;

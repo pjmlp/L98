@@ -35,18 +35,18 @@ public class ASTIf extends ASTStat {
   /**
    * Statement for the then branch
    */
-  private ASTStat m_statThen;
+  private final ASTStat m_statThen;
    
   /**
    * Statement for the else branch.
    * It is null if no else branch is present.
    */
-  private ASTStat m_statElse;
+  private final ASTStat m_statElse;
    
   /**
    * conditional expression
    */
-  private ASTExp m_exp;
+  private final ASTExp m_exp;
 
   /**
    * @param line where the expression was found.

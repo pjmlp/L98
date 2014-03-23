@@ -26,7 +26,7 @@ public class CompilerError {
   /**
    * Prefix to be shown before the colon(:) on the error messages.
    */
-  private String m_prefix;
+  private final String m_prefix;
   
   /**
    * Amount of error messages displayed so far.
@@ -74,6 +74,11 @@ public class CompilerError {
    */
   public void resetErrorCount () { m_errorCount = 0; }
 
+  /**
+   * Writes a message to standard output with associated error.
+   * @param msg Message to write
+   * @param e An exception
+   */
     public void message(String msg, Exception e) {
         m_errorCount++;
         System.out.printf ("%s:%s, %s\n", m_prefix, msg, e);

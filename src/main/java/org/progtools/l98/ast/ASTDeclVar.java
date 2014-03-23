@@ -36,17 +36,17 @@ public class ASTDeclVar extends ASTDecl {
   /**
    * Identifier's name.
    */
-  private String m_id;
+  private final String m_id;
    
   /**
    * Identifier's type.
    */
-  private Type m_type;
+  private final Type m_type;
    
   /**
    *Initialization expression.
    */
-  private ASTExp  m_exp;
+  private final ASTExp  m_exp;
 
  /**
   * @param line where the expression was found.

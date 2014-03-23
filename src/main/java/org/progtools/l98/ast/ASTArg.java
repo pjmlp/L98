@@ -28,17 +28,17 @@ public abstract class ASTArg extends ASTNode {
   /**
    * Argument's name
    */
-  private String m_id;
+  private final String m_id;
    
   /**
    * L98 type
    */
-  private Type   m_type;
+  private final Type   m_type;
   
   /**
    * @param line where the expression was found.
-   * @param left expression on the left side of the operator.
-   * @param right expression on the right side of the operator.
+   * @param id the parameter name
+   * @param type the parameter type definition
    */
   protected ASTArg (int line, String id, Type type) {
     super (line);
@@ -59,10 +59,8 @@ public abstract class ASTArg extends ASTNode {
   /**
    * Semantic analysis and code generation.
    * @param env current environment.
-   * @param err where to generate errors to.
-   * @param gen interface with the compiler's backend.
    * @param nesting current static lexical level.
-   * @return The L98 type of the expression.
+   * @param index index into the stack frame.
    */  
   public abstract void transverse (Environ env, int nesting, int index);
    

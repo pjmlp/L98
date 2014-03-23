@@ -32,8 +32,11 @@ public class ASTArgList extends ASTNode {
   /**
    * The arguments to keep around.
    */
-  private Deque<ASTArg> m_args;
+  private final Deque<ASTArg> m_args;
 
+  /**
+   * Default constructor
+   */
   public ASTArgList () {
     super (0);
     m_args = new LinkedList<> ();
@@ -41,6 +44,7 @@ public class ASTArgList extends ASTNode {
 
   /**
    * Adds an argument to the list.
+     * @param arg an procedure/function argument
    */
   public void add (ASTArg arg) { m_args.add(arg); }
 

@@ -24,8 +24,10 @@ import java.io.File;
  * Utility class for pathname handling.
  */
 public final class Pathnames {
-    /*
+    /**
      * Changes the extension of the provided path.
+     * @param filename the full path
+     * @param extension the file extension
      * @return the same pathname with the extension replaced
      */
     public static String changeFileExtension(String filename, String extension) {

@@ -34,7 +34,7 @@ public class ASTDeclList extends ASTDecl {
   /**
    * Declarations list
    */
-  private List<ASTDecl> m_decls;
+  private final List<ASTDecl> m_decls;
 
   /**
    * @param line where the expression was found.

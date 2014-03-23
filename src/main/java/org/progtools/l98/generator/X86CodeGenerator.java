@@ -29,7 +29,7 @@ public final class X86CodeGenerator implements CodeGenerator {
    /**
     * Output source for the Assembly code.
     */
-   private PrettyWritter m_out;
+   private final PrettyWritter m_out;
    
    /**
     * @param out Where to write the text representation of the Assembly code.
@@ -424,6 +424,7 @@ public final class X86CodeGenerator implements CodeGenerator {
       m_out.writeDirective (".lcomm globals, " + (size * WORD_SIZE));
    }
 
+    @Override
     public void comment(String description) throws IOException {
         m_out.writeComment (description);
     }

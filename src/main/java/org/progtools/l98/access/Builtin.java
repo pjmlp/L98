@@ -28,7 +28,7 @@ import org.progtools.l98.generator.PreDefinedRoutines;
 public class Builtin extends Access {
     
 
-  private PreDefinedRoutines  m_subrotine;
+  private final PreDefinedRoutines  m_subrotine;
   
   /**
    * @param subrotine Type of function represented by this memory access.

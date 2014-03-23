@@ -36,6 +36,7 @@ public final class Compiler {
    
    /**
     * Command line version entry point.
+     * @param args Java command line arguments
     */
     public static void main(String args[]) {
       CompilerError error = new CompilerError ("L'98");
@@ -51,7 +52,7 @@ public final class Compiler {
         InputStream in = new FileInputStream (args [args.length - 1]);
 	Parser parser = new Parser (in);
 	parser.setCompilerError(error);
-	ASTStat node = parser.start();
+	ASTStat node = Parser.start();
         
         if (node != null) {
           boolean asExe = args.length > 0 && args [0].equals ("-e");
