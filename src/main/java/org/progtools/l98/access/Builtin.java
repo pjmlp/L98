@@ -38,22 +38,19 @@ public class Builtin extends Access {
 
   @Override
    public void genLoadAccess (CodeGenerator gen, int nesting) throws IOException {
-      System.err.println ("Internal Compiler Error, invalid access");
-      System.exit (1);
+      assert false: "Internal Compiler Error, invalid access";
    }
 
 
   @Override
    public void genLoadAdrAccess (CodeGenerator gen, int nesting) throws IOException {
-      System.err.println ("Internal Compiler Error, invalid access");
-      System.exit (1);
+      assert false: "Internal Compiler Error, invalid access";
    }
 
 
   @Override
    public void genStoreAccess (CodeGenerator gen, int nesting)  throws IOException {
-      System.err.println ("Internal Compiler Error, invalid access");
-      System.exit (1);
+      assert false: "Internal Compiler Error, invalid access";
    }
 
 

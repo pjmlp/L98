@@ -91,7 +91,7 @@ public final class Compiler {
 				    boolean asExe, boolean keepAsm, String linkPath) {
     try {
       String fileName = Pathnames.changeFileExtension(sourceName, ".s");
-      FileOutputStream  out = new FileOutputStream (fileName);
+      FileOutputStream  out = new FileOutputStream (fileName); // The code generators will close the file.
       
       Environ env = EvironFactory.getEnvironment();
         
