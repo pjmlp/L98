@@ -59,7 +59,7 @@ public class NativeCodeGeneration {
     
      private static File getRuntimeFile(String filename) throws IOException {
          Path runtimeFile = Files.createTempFile("l98", ".s");
-         try (InputStream stream = Compiler.class.getResourceAsStream(filename)) {
+         try (InputStream stream = NativeCodeGeneration.class.getResourceAsStream(filename)) {
              Files.copy(stream, runtimeFile, StandardCopyOption.REPLACE_EXISTING);
          }
          File runtime = runtimeFile.toFile();
