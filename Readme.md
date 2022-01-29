@@ -4,7 +4,7 @@
 
 # Overview
 
-This compiler was developed during the compiler design course, it needed to be cleaned up in a few spots before making it available on GitHub, namely:
+Originally this compiler was developed during the compiler design course, it needed to be cleaned up in a few spots before making it available on GitHub, namely:
 
 - translation of code comments into English;
 - conversion of the build procedure into a Maven build file;
@@ -12,6 +12,11 @@ This compiler was developed during the compiler design course, it needed to be c
 - replaced the NASM macros by an Assembly generator backend using AT&T syntax
 
 For more information check the existing [PDF](docs/L98.pdf) documentation.
+
+# Roadmap
+
+Later I upgraded the language version to Java 9, and now decided that it would be a good opportunity to rejuvenate the toy compiler with Java 17.
+
 
 # License
 
