@@ -73,7 +73,7 @@ public class TypeArg extends Type {
   }   
 
     /**
-   * The usal hashing companion method to equals().
+   * The usual hashing companion method to equals().
    */
     @Override
     public int hashCode() {

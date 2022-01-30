@@ -165,7 +165,7 @@ public interface CodeGenerator extends AutoCloseable {
     void csp(PreDefinedRoutines subNum) throws IOException;    
     
     /**
-     * Inconditional jump to a given destination.
+     * Unconditional jump to a given destination.
      * @param label target destination.
      */
     void jmp(String label) throws IOException;

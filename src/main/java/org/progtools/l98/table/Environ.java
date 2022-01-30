@@ -23,7 +23,7 @@ import java.util.Map;
 
 
 /**
- * Class responsible for managing identifier's environments.
+ * Class responsible for managing identifiers environments.
  */
 public class Environ {
   /**
@@ -78,7 +78,7 @@ public class Environ {
    */
   public void removeLast () { 
     String id = m_ids.pop ();
-    Stack elems = m_vars.get (id);
+    Stack<Element> elems = m_vars.get (id);
 
     elems.pop (); 
   }

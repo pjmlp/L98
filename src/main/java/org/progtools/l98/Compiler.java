@@ -39,7 +39,7 @@ public final class Compiler {
      * @param args Java command line arguments
     */
     public static void main(String args[]) {
-      CompilerError error = new CompilerError ("L'98");
+      var error = new CompilerError ("L'98");
       if (args.length  < 1) {
         System.out.println ("\nUsage : Compiler [-e] [-k] [-L<path>] <filename>");
 	System.out.println ("\n -e -> Additionally to the bytecode, an executable is generated.");
@@ -90,8 +90,8 @@ public final class Compiler {
   private static void generateCode (ASTStat tree, CompilerError error, String sourceName,
 				    boolean asExe, boolean keepAsm, String linkPath) {
     try {
-      String fileName = Pathnames.changeFileExtension(sourceName, ".s");
-      FileOutputStream  out = new FileOutputStream (fileName); // The code generators will close the file.
+      var fileName = Pathnames.changeFileExtension(sourceName, ".s");
+      var  out = new FileOutputStream (fileName); // The code generators will close the file.
       
       Environ env = EvironFactory.getEnvironment();
         

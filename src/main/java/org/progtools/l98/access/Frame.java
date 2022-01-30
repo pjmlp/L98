@@ -65,8 +65,7 @@ public class Frame extends Access {
 
    @Override
    public void genCallAccess (CodeGenerator gen, int nesting, int argCount)  throws IOException {
-     System.err.println ("Internal Compiler Error, invalid access");
-     System.exit (2);
+     assert false: "Internal Compiler Error, invalid access";
    }
   
    /**

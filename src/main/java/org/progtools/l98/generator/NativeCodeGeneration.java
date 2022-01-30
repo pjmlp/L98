@@ -72,7 +72,7 @@ public class NativeCodeGeneration {
      * Assembles the give files into their  object files.
      * @param run The runtime to execute the assembler from.
      * @param files The files to assemble.
-     * @throws If any error happened while lauching the extern processes
+     * @throws If any error happened while launching the extern processes
      */
      private static void assembleFiles (Runtime run, List<File> files) throws Exception {
          for (File fd: files) {

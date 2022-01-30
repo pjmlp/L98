@@ -416,7 +416,7 @@ public final class X86CodeGenerator implements CodeGenerator {
    }
 
    /**
-    * Sets the required ammount of global memory.
+    * Sets the required amount of global memory.
     * This should only be called after a BSS section was started.
     * @param size The value is in words.
     */
