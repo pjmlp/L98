@@ -25,7 +25,7 @@ public class TypeBool extends Type {
   /**
    * Makes sure two TypeBool instances can be properly compared.
    * @param other object to compare to.
-   * @returns true if objects are instances of TypeBool
+   * @return true if objects are instances of TypeBool
    */
     @Override
     public boolean equals (Object other) { return other instanceof TypeBool; }

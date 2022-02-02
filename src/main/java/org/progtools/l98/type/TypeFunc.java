@@ -65,7 +65,7 @@ public class TypeFunc extends Type {
   
 
   /**
-   * @returns An enumeration of the function's arguments.
+   * @return An enumeration of the function's arguments.
    */
   public Iterator<TypeArg> elements () { return m_args.iterator(); }
 
@@ -83,7 +83,7 @@ public class TypeFunc extends Type {
   /**
    * Makes sure two TypeFunc instances can be properly compared.
    * @param other object to compare to.
-   * @returns true if objects are instances of TypeFunc
+   * @return true if objects are instances of TypeFunc
    */
   @Override
   public boolean equals (Object other) { 
@@ -96,7 +96,7 @@ public class TypeFunc extends Type {
    }   
 
   /**
-   * The usal hashing companion method to equals().
+   * The usual hashing companion method to equals().
    */
     @Override
     public int hashCode() {

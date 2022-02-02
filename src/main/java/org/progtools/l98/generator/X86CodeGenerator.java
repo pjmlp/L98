@@ -179,12 +179,12 @@ public final class X86CodeGenerator implements CodeGenerator {
    }
     
    /**
-    * Invoca uma subrotina que se encontra definida na etiqueta label.
-    * @param entry Ponto de entrada. 
-    *              entry = -1 -> A funï¿½ao destino estï¿½ num nï¿½vel inferior
-    *              entry =  0 -> A funï¿½ao destino estï¿½ ao mesmo nï¿½vel
-    *              entry =  1 -> A funï¿½ao destino estï¿½ num nï¿½vel superior    
-    * @param label Etiqueta de destino.
+    * Calls a subroutine defined on the provided label.
+    * @param entry Entry level on the frame pointer. 
+    *              entry = -1 -> The callee is on a lower frame
+    *              entry =  0 -> The callee is on the same frame level
+    *              entry =  1 -> The callee is on a upper frame
+    * @param label Subroutine entry point.
     */
     @Override
    public void call (int entry, String label) throws IOException {

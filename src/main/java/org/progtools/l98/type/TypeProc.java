@@ -38,12 +38,12 @@ public class TypeProc extends Type {
   public TypeProc (Deque<TypeArg> args) { m_args = args; }
 
   /**
-   * @returns An enumeration of the procedure's arguments.
+   * @return An enumeration of the procedure's arguments.
    */
   public Iterator<TypeArg> elements () { return m_args.iterator(); }
 
   /**
-   * @returns A reversed enumeration of the procedure arguments.
+   * @return A reversed enumeration of the procedure arguments.
    */
   public Iterator<TypeArg> elementsBackward () { return m_args.descendingIterator(); }
 
@@ -55,7 +55,7 @@ public class TypeProc extends Type {
   /**
    * Makes sure two TypeProc instances can be properly compared.
    * @param other object to compare to.
-   * @returns true if objects are instances of TypeInt
+   * @return true if objects are instances of TypeInt
    */
   @Override
   public boolean equals (Object other) { 

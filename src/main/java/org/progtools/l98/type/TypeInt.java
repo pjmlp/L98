@@ -26,7 +26,7 @@ public class TypeInt extends Type {
   /**
    * Makes sure two TypeInt instances can be properly compared.
    * @param other object to compare to.
-   * @returns true if objects are instances of TypeInt
+   * @return true if objects are instances of TypeInt
    */
     @Override
   public boolean equals (Object other) { return other instanceof TypeInt; }

@@ -59,7 +59,7 @@ public class TypeArg extends Type {
   /**
    * Makes sure two TypeArg instances can be properly compared.
    * @param other object to compare to.
-   * @returns true if objects are instances of TypeArg and deep comparisasion matches.
+   * @return true if objects are instances of TypeArg and deep comparisasion matches.
    */
   @Override
   public boolean equals (Object other) { 
