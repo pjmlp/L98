@@ -86,10 +86,10 @@ public class ASTFor extends ASTStat {
   public int alloc () { return 1 + m_stat.alloc (); }
   
   /**
-   * Adiciona a variavel de controle do ciclo ao ambiente
-   * @param env Ambiente corrente
-   * @param nesting Profundidade da instrucacao
-   * @param index Proxima posicao disponivel para variaveis
+   * Adds the loop control variable to the environment
+   * @param env current environment.
+   * @param nesting current static lexical level.
+   * @param index Next position available for variable generation.
    */
   private Attributes addVarToEnv (Environ env, int nesting, int index) {
     Access valAccess;

@@ -151,7 +151,7 @@ public class ASTDeclProc extends ASTDecl {
       gen.ret ();
       gen.comment ("end of procedure  " + m_id);   
 
-      // Retira o procediento da hieraquia $LastSub$
+      // Removes the procesure out of the hierachy $LastSub$
       env.removeLast ();
    }
    catch (IOException e) {
