@@ -21,35 +21,6 @@ package org.progtools.l98.util;
 
 /**
  * Represents pairs of elements, also known as 2 elements tuples.
- * It was originally modeled on C++'s pair class.
  */
-public class Pair {
-   /**
-    * First element.
-    */
-   private final Object m_left;
-
-   /**
-    * Second element.
-    */
-   private final Object m_right;
-   
-   /**
-    * @param left first element.
-    * @param right second element.
-    */
-   public Pair (Object left, Object right) {
-      m_left = left;
-      m_right = right;
-   }
-   
-   /**
-    * @return first element.
-    */
-   public Object getLeft () { return m_left; }
-   
-   /**
-    * @return second element.
-    */
-   public Object getRight () { return m_right; }   
+public record Pair<T,K> (T left, K right) {
 }
