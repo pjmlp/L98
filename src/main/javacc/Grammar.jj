@@ -161,13 +161,13 @@ ASTStat statement () :
  Token t;
  ASTExp e, e1, e2;
  ASTStat stat1, stat2 = null;
- Pair p;
+ Pair<ASTDeclList, ASTDeclList> p;
  ASTElementList el;
  boolean direction; // direction used by the for statement, true -> upto, false -> downto
 }
 {
   t = <LET>  p = declList ()  <IN> stat1 = statList () <END> 
-  {return new ASTLet (t.beginLine, (ASTDeclList) p.getLeft (), (ASTDeclList) p.getRight (), stat1);}
+  {return new ASTLet (t.beginLine, (ASTDeclList) p.left (), (ASTDeclList) p.right (), stat1);}
 
 | <LPAREN> stat1 = statList () <RPAREN> {return stat1;}
 
@@ -189,7 +189,7 @@ ASTStat statement () :
 }
 
 /* variable declarations */
-Pair declList () :
+Pair<ASTDeclList, ASTDeclList> declList () :
 {
   ASTDeclList dlVarVal = new ASTDeclList (0);
   ASTDeclList dlFunProc = new ASTDeclList (0);  
@@ -200,7 +200,7 @@ Pair declList () :
   |(d = declVarVal () { dlVarVal.add (d); } )* (d = declFunProc () { dlFunProc.add (d); })+
   )
   
-  {return new Pair (dlVarVal, dlFunProc); }
+  {return new Pair<ASTDeclList, ASTDeclList> (dlVarVal, dlFunProc); }
 }
 
 /* Constants and variable declarations */
