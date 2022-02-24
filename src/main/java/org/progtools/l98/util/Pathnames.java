@@ -34,9 +34,9 @@ public final class Pathnames {
         int index = filename.lastIndexOf('.');
         if (index > 0) {
            return filename.substring(filename.lastIndexOf(File.separatorChar) + 1, filename.lastIndexOf('.')) + extension;
-	} else {
-	    return filename;
-	}
+        } else {
+            return filename;
+        }
     }
     
     
