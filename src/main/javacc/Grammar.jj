@@ -86,11 +86,11 @@ TOKEN :
 |	< LPAREN:           "("      >
 |	< RPAREN:           ")"      >
 |	< LBRACE:           "["      >
-| 	< RBRACE:           "]"      >
+| < RBRACE:           "]"      >
 |	< SEMI:             ";"      >
-| 	< COLON:            ":"      >
+| < COLON:            ":"      >
 |	< COMMA:            ","      >
-| 	< LET:              "let"    >
+| < LET:              "let"    >
 |	< IN:               "in"     >
 |	< END:              "end"    >
 |	< IF:               "if"     >
@@ -104,15 +104,15 @@ TOKEN :
 |	< BOOL:             "bool"   >
 |	< INT:              "int"    >
 |	< TRUE:             "true"   >
-|       < FALSE:            "false"  >
-|       < VAR:              "var"    >
-|       < VAL:              "val"    >
-|       < FUN:              "fun"    >
-|       < PROC:             "proc"   >
-|       < RETURN:           "return" >
-|       < FOR:              "for"    >
-|       < UPTO:             "upto"   >
-|       < DOWNTO:           "downto" >
+| < FALSE:            "false"  >
+| < VAR:              "var"    >
+| < VAL:              "val"    >
+| < FUN:              "fun"    >
+| < PROC:             "proc"   >
+| < RETURN:           "return" >
+| < FOR:              "for"    >
+| < UPTO:             "upto"   >
+| < DOWNTO:           "downto" >
 }
 
 /* Integer constants */
