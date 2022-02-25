@@ -108,22 +108,11 @@ public final class X86CodeGenerator implements CodeGenerator {
       m_out.writeInstruction ("movl %%eax, globals(, %%esi, %d)", WORD_SIZE);
    }
 
-   /**
-    *  Empilha o endereï¿½o da posiï¿½ao de memï¿½ria que se
-    * encontra level nï¿½veis acima do registo de activaï¿½ao corrente.
-    * @param level Numero de nï¿½veis
-    * @param offset Deslocamento dentro do frame.
-    */
     @Override
    public void loadVarA (int level, int offset) throws IOException {
-      
-      m_out.writeInstruction ("LOADVARA " + level + ", " + offset); 
+      commentf("LOADVARA %d, %d", level, offset);
    }
 
-   /**
-    *  Empilha o endereï¿½o daposiï¿½ao de memï¿½ria.
-    * @param offset Deslocamento a partir da base da pilha.
-    */
     @Override
    public void loadGlobalA (int offset) throws IOException {
       
@@ -153,14 +142,8 @@ public final class X86CodeGenerator implements CodeGenerator {
       m_out.writeInstruction("subl $%d, %%esp", (size * WORD_SIZE)); 
    }
    
-   /* Controle */
+   //------------ Control flow
 
-    /**
-    * Desempilha um valor v do topo da pilha, se for igual a value
-    * salta para label, caso contrï¿½rio continua a execucaï¿½ao normalmente
-    * @param value Valor da comparaï¿½ao.
-    * @param label Etiqueta de destino.
-    */
     @Override
    public void jpc (int value, String label) throws IOException {
       m_out.writeComment("JPC " + value + ", " + label);
