@@ -26,7 +26,7 @@ import org.progtools.l98.table.Environ;
 
 
 /**
- * NAST node for arguments' list.
+ * NAST node for arguments list.
  */
 public class ASTArgList extends ASTNode {
   /**

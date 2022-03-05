@@ -109,7 +109,7 @@ public class ASTDeclVal extends ASTDecl {
    * @param err used for error messages.
    * @param gen code generator.
    * @param nesting current static lexical level.
-   * @param index Pnext slot available for variables.
+   * @param index next slot available for variables.
    * @return the next available slot for the following instructions.
    */   
   @Override

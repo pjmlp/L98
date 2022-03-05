@@ -31,7 +31,7 @@ import org.progtools.l98.type.TypeBool;
  */
 public class ASTBoolConst extends ASTExp {
  /**
-  * Valor da constante
+  * constant value
   */
   private final boolean m_val;
 

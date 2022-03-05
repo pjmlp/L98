@@ -30,7 +30,7 @@ public class ASTArgVal extends ASTArg {
   /**
    * @param line where the expression was found.
    * @param id   identifier used for the argument.
-   * @param type identifier's data type.
+   * @param type identifiers data type.
    */
   public ASTArgVal (int line, String id, Type type) { 
     super (line, id, type);

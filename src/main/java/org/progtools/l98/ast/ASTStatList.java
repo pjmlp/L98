@@ -69,7 +69,7 @@ public class ASTStatList extends ASTStat {
        }
      }
      catch (Exception e) {
-       e.printStackTrace ();
+       //TODO: err.message("Error while generating code", e);
        System.exit (2);
      }    
     

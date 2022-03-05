@@ -70,7 +70,7 @@ public class TypeFunc extends Type {
   public Iterator<TypeArg> elements () { return m_args.iterator(); }
 
   /**
-   * @returns A reversed enumeration of the function's arguments.
+   * @return A reversed enumeration of the function's arguments.
    */
   public Iterator<TypeArg> elementsBackward () { return m_args.descendingIterator(); }
 

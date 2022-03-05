@@ -67,7 +67,7 @@ public class ASTDeclList extends ASTDecl {
        }
      }
      catch (Exception e) {
-       e.printStackTrace ();
+       //TODO: err.message("Error while generating code, terminating", e);
        System.exit (2);
      }    
     
@@ -87,7 +87,7 @@ public class ASTDeclList extends ASTDecl {
    * @param err used for error messages.
    * @param gen code generator.
    * @param nesting current static lexical level.
-   * @param index Pnext slot available for variables.
+   * @param index next slot available for variables.
    * @return the next available slot for the following instructions.
    */  
   @Override
@@ -115,8 +115,9 @@ public class ASTDeclList extends ASTDecl {
     * @param env Current environment.
     */
   public void clearEnviron (Environ env) {
-    for (int i = 0; i < m_decls.size (); i++)
-      env.removeLast ();
+      for (ASTDecl m_decl : m_decls) {
+          env.removeLast ();
+      }
   }
 }
 

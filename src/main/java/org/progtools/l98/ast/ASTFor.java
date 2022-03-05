@@ -64,7 +64,7 @@ public class ASTFor extends ASTStat {
 
  /**
   * @param line where the expression was found.
-  * @param id   loop's varible
+  * @param id   loop's variable
   * @param from initial loop value
   * @param to   final loop value
   * @param direction Increment to the loop's variable, true -> 1, false -> -1

@@ -27,7 +27,7 @@ import org.progtools.l98.type.Type;
  */
 public class Attributes {
   /**
-   * Identifier's type.
+   * identifiers type.
    */
   private final Type m_type;
 
@@ -49,7 +49,7 @@ public class Attributes {
   private final boolean m_isArgument;
   
   /**
-   * @param type Identifier's type.
+   * @param type identifiers type.
    * @param access Storage type.
    * @param isVar  Used as a variable.
    * @param isArgument Used as parameter declaration.
@@ -62,7 +62,7 @@ public class Attributes {
   }
   
   /**
-   * @return Identifier's type.
+   * @return identifiers type.
    */
   public Type getType ()  { return m_type; }
 

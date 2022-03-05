@@ -121,9 +121,7 @@ public class ASTFuncCall extends ASTExp {
       if (temp != null) {
         Attributes attr = (Attributes) temp;
 	
-        if (attr.getType () instanceof TypeFunc) {
-	  TypeFunc funcType = (TypeFunc) attr.getType ();
-
+        if (attr.getType () instanceof TypeFunc funcType) {
 	  // Makes sure there is enough stack space for the result. Builtin calls are special.
 	   if (!(attr.getAccess () instanceof Builtin))
 	     gen.alloc (1);
