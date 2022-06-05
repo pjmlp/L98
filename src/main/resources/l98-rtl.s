@@ -25,43 +25,44 @@ read_bool:
         movl    $0x0, %edi
         movl    $buffer, %esi
 
-	/* Convert the received string to uppercase */
-	movl	%ecx, %edx
-	movl    $buffer, %ebx
-read_bool_L1:	
-	cmpl	$0x0, %edx
-	je	read_bool_L3
-	movb	(%ebx), %al
-	cmpb	$0x61, %al       /* character a */
-	jb	read_bool_L2
-	cmpb	$0x7A, %al       /* character z */
-	ja	read_bool_L2
-	subb	$0x20, %al
-	movb	%al, (%ebx)
-	
-read_bool_L2:	
-	decl	%edx
-	incl    %ebx
-	jmp	read_bool_L1
-	
-read_bool_L3:	
-	/* Has the user entered true? */
-	movl	$buffer, %esi
-	movl	$true_str, %edi
-	movl	%ecx, %edx
-	repz	cmpsb
-	jecxz   read_bool_L4
-	movl	$0x0, %eax
-	jmp	read_bool_L5
-	
+        /* Convert the received string to uppercase */
+        movl    %ecx, %edx
+        movl    $buffer, %ebx
+
+read_bool_L1:    
+        cmpl    $0x0, %edx
+        je    read_bool_L3
+        movb    (%ebx), %al
+        cmpb    $0x61, %al       /* character a */
+        jb    read_bool_L2
+        cmpb    $0x7A, %al       /* character z */
+        ja    read_bool_L2
+        subb    $0x20, %al
+        movb    %al, (%ebx)
+    
+read_bool_L2:    
+        decl    %edx
+        incl    %ebx
+        jmp    read_bool_L1
+    
+read_bool_L3:    
+        /* Has the user entered true? */
+        movl    $buffer, %esi
+        movl    $true_str, %edi
+        movl    %ecx, %edx
+        repz    cmpsb
+        jecxz   read_bool_L4
+        movl    $0x0, %eax
+        jmp    read_bool_L5
+    
 read_bool_L4:
-	/* TRUE was found, for everything else FALSE is assumed. No fancy error handling going on */
-	movl	$0x1, %eax
+        /* TRUE was found, for everything else FALSE is assumed. No fancy error handling going on */
+        movl    $0x1, %eax
 
 read_bool_L5:
 
-	ret
-	
+        ret
+    
 /* L98 runtime library for read_int() */
 read_int:
         movl    $buffer, %eax
@@ -76,10 +77,10 @@ read_int_L1:
         je      read_int_L2
         movl    $0x0, %eax
         movb    (%esi), %al
-	cmpb	$0x30, %al          /* character 0 */
-	jb	read_int_L2
-	cmpb	$0x39, %al
-	ja	read_int_L2
+        cmpb    $0x30, %al          /* character 0 */
+        jb    read_int_L2
+        cmpb    $0x39, %al
+        ja    read_int_L2
         subl    $0x30, %eax
         xchg    %edi, %eax
         movl    $0xA, %ebx
@@ -97,8 +98,8 @@ read_int_L2:
 
 /* L98 runtime library for print_bool(bool) */
 print_bool:
-	pushl	%ebp
-	movl	%esp, %ebp
+        pushl    %ebp
+        movl    %esp, %ebp
 
         cmpl    $0x0, 8(%ebp)
         jnz     print_bool_L1
@@ -118,8 +119,8 @@ print_bool_L2:
 
 /* L98 runtime library for print_int(num) */
 print_int:
-	pushl	%ebp
-	movl	%esp, %ebp
+        pushl    %ebp
+        movl    %esp, %ebp
 
         pushl   %ebx
         pushl   %ecx
