@@ -24,7 +24,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 
 /**
- * Class used to write nice formatted Assembly listenings.
+ * Class used to write nice formatted Assembly listings.
  */
 final class PrettyWritter implements Closeable {
    /**

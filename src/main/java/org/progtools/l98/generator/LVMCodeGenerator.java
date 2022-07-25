@@ -26,12 +26,13 @@ public final class LVMCodeGenerator implements CodeGenerator {
    /**
     * Output source for the Assembly code.
     */
-   private PrettyWritter m_out;
+   private final PrettyWritter m_out;
    
    /**
     * @param out Where to write the text representation of the Assembly code.
-    * @param indent Desired identantion level when no labels are used.
+    * @param indent Desired indentation level when no labels are used.
     * @param size The amount of bytes to allocate in the global memory
+    * @throws java.io.IOException If an error occurs while writing into underlying stream
     */
    public LVMCodeGenerator (OutputStream out, int indent, int size) throws IOException {
       m_out = new PrettyWritter (out, indent);
@@ -41,6 +42,7 @@ public final class LVMCodeGenerator implements CodeGenerator {
    
    /**
     * Call to perform the required cleanup.
+    * @throws java.io.IOException If an error occurs while closing underlying stream.
     */
     @Override
   public void close () throws IOException {

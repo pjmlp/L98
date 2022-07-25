@@ -35,51 +35,60 @@ public interface CodeGenerator extends AutoCloseable {
     
     /**
      * Adds the two top most values in the stack and pushes the result.
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void add() throws IOException;
     
     /**
      * Subtracts the two top most values in the stack and pushes the result.
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void sub() throws IOException;    
 
     /**
      * Inverts the sign of the stack's topmost value.
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void neg() throws IOException;
     
     /**
      * Increments the SP register in size positions.
      * @param size Number of positions to increment. Both positive and negative values are allowed.
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void alloc(int size) throws IOException;
 
     /**
      *  Performs a bitwise and operation with the two topmost values in the stack,
      * the result is pushed back into it.
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void and() throws IOException;
     
     /**
      *  Performs a bitwise or operation with the two topmost values in the stack,
      * the result is pushed back into it.
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void or() throws IOException;    
 
     /**
      * Inverts the logical value (boolean) of the topmost value in the stack.
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void not() throws IOException;
     
     /**
      * Divides the two topmost values in the stack and stores back the result into
      * the stack.
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void div() throws IOException;
     
     /**
      * Multiplies the two topmost values in the stack and stores back the result into
      * the stack.
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void mul() throws IOException;
 
@@ -88,6 +97,7 @@ public interface CodeGenerator extends AutoCloseable {
      * result into the stack.
      * 0 -> true
      * 1 -> false
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void eq() throws IOException;
     
@@ -96,6 +106,7 @@ public interface CodeGenerator extends AutoCloseable {
      * result into the stack.
      * 0 -> true
      * 1 -> false
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void neq() throws IOException;    
 
@@ -104,6 +115,7 @@ public interface CodeGenerator extends AutoCloseable {
      * result into the stack.
      * 0 -> true
      * 1 -> false
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void geq() throws IOException;
     
@@ -112,6 +124,7 @@ public interface CodeGenerator extends AutoCloseable {
      * result into the stack.
      * 0 -> true
      * 1 -> false
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void leq() throws IOException;    
 
@@ -120,6 +133,7 @@ public interface CodeGenerator extends AutoCloseable {
      * result into the stack.
      * 0 -> true
      * 1 -> false
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void gt() throws IOException;
 
@@ -129,6 +143,7 @@ public interface CodeGenerator extends AutoCloseable {
      * result into the stack.
      * 0 -> true
      * 1 -> false
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void lt() throws IOException;
     
@@ -137,6 +152,7 @@ public interface CodeGenerator extends AutoCloseable {
     /**
      * Inserts a target label in the generated code.
      * @param name Target name.
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void insLabel(String name) throws IOException;
     
@@ -144,6 +160,7 @@ public interface CodeGenerator extends AutoCloseable {
      * Writes a comment in the generated file. Only respected if
      * the destination allows for storage of comments.
      * @param description Desired comment.
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void comment(String description) throws IOException;
 
@@ -156,17 +173,20 @@ public interface CodeGenerator extends AutoCloseable {
      *              entry =  0 -> Target destination is on the same level.
      *              entry =  1 -> Target destination is on a higher level.
      * @param label Destination label.
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void call(int entry, String label) throws IOException;    
 
     /**
      * Invokes a pre-defined subroutine.
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void csp(PreDefinedRoutines subNum) throws IOException;    
     
     /**
      * Unconditional jump to a given destination.
      * @param label target destination.
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void jmp(String label) throws IOException;
 
@@ -176,18 +196,21 @@ public interface CodeGenerator extends AutoCloseable {
      * The jump only takes place if the value stored at the top of the
      * stack matches the given value. In any case the stack topmost value
      * is removed.
-     * @param value Desired comparisation value.
+     * @param value Desired comparison value.
      * @param label Target destination.
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void jpc(int value, String label) throws IOException;
     
     /**
      * Returns from a subroutine to the calling point.
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void ret() throws IOException;    
     
     /**
      * Terminates execution.
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void halt() throws IOException;    
 
@@ -196,24 +219,28 @@ public interface CodeGenerator extends AutoCloseable {
     /**
      * Stores a constant value into the stack.
      * @param value Desired value to store.
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void load(int value) throws IOException;
 
     /**
      * Stores the value located at the given memory offset into the stack.
      * @param offset Offset from the start of the data memory.
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void loadGlobal(int offset) throws IOException;
 
     /**
      * Stores the value located at the top of the stack into the given memory offset.
      * @param offset Offset from the start of the data memory.
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void storeGlobal(int offset) throws IOException;
     
     /**
      * Stores the memory address of value located at the given memory offset into the stack.
      * @param offset Offset from the start of the data memory.
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void loadGlobalA(int offset) throws IOException;
 
@@ -222,6 +249,8 @@ public interface CodeGenerator extends AutoCloseable {
      * stores its contents into the top of the stack.
      * 
      * The former value at the top of the stack is removed.
+     * 
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void loadInd() throws IOException;
 
@@ -231,6 +260,8 @@ public interface CodeGenerator extends AutoCloseable {
      * 
      * Both are removed from the stack and the value is stored at the given memory
      * address.
+     * 
+     * @throws java.io.IOException If an error occurs while writing the code.
      */    
     void storeInd() throws IOException;
     
@@ -239,6 +270,7 @@ public interface CodeGenerator extends AutoCloseable {
      * position a few lexical levels above the current activation level.
      * @param level Lexical level of the variable.
      * @param offset Offset inside the frame for the lexical level.
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void loadVar(int level, int offset) throws IOException;
 
@@ -248,6 +280,7 @@ public interface CodeGenerator extends AutoCloseable {
      * activation level.
      * @param level Lexical level of the variable.
      * @param offset Offset inside the frame for the lexical level.
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void storeVar(int level, int offset) throws IOException;
     
@@ -255,7 +288,8 @@ public interface CodeGenerator extends AutoCloseable {
      * Stores into the stack the variable's memory address, located in a memory
      * position a few lexical levels above the current activation level.
      * @param level Lexical level of the variable.
-     * @param offset Offset inside the frame for the lexical level.
+     * @param offset Offset inside the frame for the lexical level
+     * @throws java.io.IOException If an error occurs while writing the code.
      */
     void loadVarA(int level, int offset) throws IOException;
 }
