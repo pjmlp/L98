@@ -80,7 +80,7 @@ public final class Compiler {
   /**
    * Generates the code from the AST.
    * The semantic analysis is integrated with the code generation.
-   * @param tree  AST resulted fromt the syntax anaylis.
+   * @param tree  AST resulted from the syntax analysis.
    * @param error Error reporting class.
    * @param sourceName File to compile.
    * @param asExe if true native code will be generated.
