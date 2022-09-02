@@ -111,6 +111,13 @@ public final class X86CodeGenerator implements CodeGenerator {
     @Override
    public void loadVarA (int level, int offset) throws IOException {
       commentf("LOADVARA %d, %d", level, offset);
+      staticLink(level);
+      if (offset < 0) {
+          m_out.writeInstruction ("movl %d(%%ebx), %%eax", (offset - 1) * -WORD_SIZE);
+      } else {
+          m_out.writeInstruction ("movl %d(%%ebx), %%eax", (offset + 1) * -WORD_SIZE);
+      }
+      m_out.writeInstruction ("pushl %%eax"); 
    }
 
     @Override
