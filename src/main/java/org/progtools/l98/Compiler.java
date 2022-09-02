@@ -22,9 +22,9 @@ import org.progtools.l98.ast.ASTStat;
 import org.progtools.l98.generator.CodeGenerator;
 import org.progtools.l98.table.Environ;
 
-import org.progtools.l98.generator.LVMCodeGenerator;
 import org.progtools.l98.generator.NativeCodeGeneration;
-import org.progtools.l98.generator.X86CodeGenerator;
+import org.progtools.l98.generator.CodeGeneratorFactory;
+import org.progtools.l98.generator.CodeGeneratorFactory.BackendKind;
 import org.progtools.l98.table.EvironFactory;
 import org.progtools.l98.util.Pathnames;
 
@@ -89,15 +89,19 @@ public final class Compiler {
    */ 
   private static void generateCode (ASTStat tree, CompilerError error, String sourceName,
 				    boolean asExe, boolean keepAsm, String linkPath) {
+      
     try {
       var fileName = Pathnames.changeFileExtension(sourceName, ".s");
       var  out = new FileOutputStream (fileName); // The code generators will close the file.
       
       Environ env = EvironFactory.getEnvironment();
+      
+      final int INDENT = 20;
+      final int GLOBAL_SIZE = tree.alloc();
         
       // Selects the type of code generation. 
       if (asExe) {
-          try(CodeGenerator gen = new X86CodeGenerator (out, 20, tree.alloc())) {
+          try(CodeGenerator gen = CodeGeneratorFactory.get (BackendKind.X86, out, INDENT, GLOBAL_SIZE)) {
             if (!keepAsm)
               new File(fileName).deleteOnExit();
             tree.transverse (env, error, gen, 1, 1);
@@ -107,7 +111,7 @@ public final class Compiler {
           }
       }
       else {
-        try (CodeGenerator gen = new LVMCodeGenerator (out, 20, tree.alloc())) {
+        try (CodeGenerator gen = CodeGeneratorFactory.get (BackendKind.LVM, out, INDENT, GLOBAL_SIZE)) {
             tree.transverse (env, error, gen, 1, 1);
         }
       }
