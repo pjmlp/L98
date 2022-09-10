@@ -41,10 +41,11 @@ public final class Compiler {
     public static void main(String args[]) {
       var error = new CompilerError ("L'98");
       if (args.length  < 1) {
-        System.out.println ("\nUsage : Compiler [-e] [-k] [-L<path>] <filename>");
+        System.out.println ("\nUsage : Compiler [-e] [-k] [-w] [-L<path>] <filename>");
 	System.out.println ("\n -e -> Additionally to the bytecode, an executable is generated.");
         System.out.println ("\n -k -> When -e is given, the generated Assembly file is not deleted.");
-        System.out.println ("\n -L<path>] -> Provides extra paths for the linker to search for");
+        System.out.println ("\n -w -> Generates WASM bytecode instead of LVM.");
+        System.out.println ("\n -L<path> -> Provides extra paths for the linker to search for");
         System.exit (1);
       }
 
@@ -57,18 +58,21 @@ public final class Compiler {
         if (node != null) {
           boolean asExe = args.length > 0 && args [0].equals ("-e");
           boolean keepAsm = args.length > 1 && args [1].equals ("-k");
+          boolean wasmAsm = args.length > 2 && args [1].equals ("-w");
           String linkPath = "";
           for (String arg: args) {
               if (arg.equals("-e")) {
                   asExe = true;
               } else if (arg.equals("-k")) {
                   keepAsm = true;
+              } else if (arg.equals("-w")) {
+                  wasmAsm = true;
               } else if (arg.startsWith("-L")) {
                   linkPath = arg.substring(2);
               }
           }
 
-          generateCode (node, error, args [args.length - 1], asExe, keepAsm, linkPath);
+          generateCode (node, error, args [args.length - 1], asExe, keepAsm, wasmAsm, linkPath);
         }
       } 
       catch (ParseException | FileNotFoundException ex) {
@@ -85,10 +89,11 @@ public final class Compiler {
    * @param sourceName File to compile.
    * @param asExe if true native code will be generated.
    * @param keepAsm if true and asExe was true as well, the temporary Assembly file will be kept.
+   * @param wasmAsm if true WASM bytecode instead of LVM bytecode will be used
    * @param linkPath Extra link paths for the native code linker
    */ 
   private static void generateCode (ASTStat tree, CompilerError error, String sourceName,
-				    boolean asExe, boolean keepAsm, String linkPath) {
+				    boolean asExe, boolean keepAsm, boolean wasmAsm, String linkPath) {
       
     try {
       var fileName = Pathnames.changeFileExtension(sourceName, ".s");
@@ -109,14 +114,16 @@ public final class Compiler {
           if (error.getErrorCount () == 0) {
         	     NativeCodeGeneration.generateExecutable (fileName, error, linkPath);
           }
-      }
-      else {
+      } else if (wasmAsm) {
+        try (CodeGenerator gen = CodeGeneratorFactory.get (BackendKind.WASM, out, INDENT, GLOBAL_SIZE)) {
+            tree.transverse (env, error, gen, 1, 1);
+        }
+      } else {
         try (CodeGenerator gen = CodeGeneratorFactory.get (BackendKind.LVM, out, INDENT, GLOBAL_SIZE)) {
             tree.transverse (env, error, gen, 1, 1);
         }
       }
-    }
-    catch (Exception ex) {
+    } catch (Exception ex) {
       error.message(ex.getMessage());
       System.exit (3);
     }

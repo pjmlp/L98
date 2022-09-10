@@ -91,7 +91,7 @@ public class NativeCodeGeneration {
      * @param run The runtime to execute the assembler from.
      * @param files The files to assemble.
      * @param linkPath Extra link paths for the native code linker
-     * @throws If any error happened while lauching the extern processes
+     * @throws If any error happened while launching the extern processes
      */
      private static void linkFiles (Runtime run, String executableName, List<File> files, String linkPath) throws Exception {
          StringBuilder cmd = new StringBuilder(1024); // 1kb should be enough
