@@ -15,8 +15,9 @@ For more information check the existing [PDF](docs/L98.pdf) documentation.
 
 # Roadmap
 
-Later I upgraded the language version to Java 9, and now decided that it would be a good opportunity to rejuvenate the toy compiler with Java 17.
+Later I upgraded the language version to Java 9, and now decided that it would be a good opportunity to rejuvenate the toy compiler with modern Java, as it gets improved.
 
+Now it also allows for compiling into native code via GraalVM, when using `mvn -Pnative -DskipTests package` as build command.
 
 # License
 
