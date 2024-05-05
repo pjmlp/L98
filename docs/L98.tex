@@ -25,6 +25,8 @@
 \center{Paulo Pinto and Pablo Tavares}
 \center{First release, 24 October 1999}
 \center{Second release, 05 May 2013}
+\center{Third release, 23 December 2017}
+
 
 \end{titlepage}
 
@@ -32,7 +34,7 @@
 
 %-------------------------------------------------------------------------
 \chapter{Foreword}
-
+\section{To first and second releases}
 This compiler was developed as part of a workgroup project in 1999, while both
 of the authors were at the university.
 
@@ -45,6 +47,11 @@ code structure to Java 7, while dropping a few uses that were only relevant in J
 
 Additionally the compiler is now GPL licensed as the older code not written
 by us was removed from the runtime.
+
+\section{To third release}
+The Java version being used has been upgraded to Java 9, and the opportunity was taken
+to refactor some code snippets and also to improve the documentation.
+
 
 \chapter{The L98 Language}
 
@@ -521,8 +528,8 @@ Example
  let
    a := false
  in
-  printint (true);  /* Prints true */
-  printint (a)      /* Prints false */
+  printbool (true);  /* Prints true */
+  printbool (a)      /* Prints false */
  end
 \end{lstlisting}
 
@@ -825,6 +832,8 @@ to generate proper Assembly code as well.
 Currently an Assembly file is generated in the AT\&T format ending with a \emph{.s}
 extension, similar to the bytecode case.
 
+\section{The builtin routines}
+
 The runtime is fully written in Assembly and is stored as a set of resources inside the \emph{jar}
 file.
 
@@ -835,21 +844,10 @@ During compilation to native code, a temporary file with the runtime code is gen
 GNU assembler (AS) and liker (ld) are invoked with all files as input, to generate the final executable.
 
 While the idea to re-write the runtime in Assembly can seem crazy in 2013, the goal was to remove
-the dependency on the C language, while opening the door for a possible bootstrap. See the \ref{sct:ideas}.
-for more information.
+the dependency on the C language, while opening the door for a possible bootstrap.
 
-
-\section{The builtin routines}
-
-  The builtin routines are defined in C. This makes the compiler dependent on a C
-compiler in addition to an Assembler and Linker.
-
-  On the other hand, it allows for more portability across systems, due to the
-ways it is possible to invoke kernel APIs across operating systems, regardless of
-the process architecture.
-
-  Currently there is the plan to eventually improve the L98 language to be able to
-do syscalls, thus removing the need of a C compiler in the process.
+By exposing the required support for syscalls, the Assembly would be no longer necessary and the
+runtime could be fully written in L98. See the \ref{sct:ideas} for more information.
 
 %-------------------------------------------------------------------------
 \chapter{Installing and using the compiler}
@@ -858,7 +856,7 @@ do syscalls, thus removing the need of a C compiler in the process.
   To install the compiler you need to have installed the following software:
 
 \begin{itemize}  
-\item a JDK compatible with Java version 7 or higher;
+\item a JDK compatible with Java version 9 or higher;
 \item Maven version 3 or higher;
 \item GNU binutils for native code generation (On Windows mingw is advisable).
 \end{itemize}
