@@ -42,21 +42,13 @@ public final class CodeGeneratorFactory {
      * @throws IOException In case there is an error writing into the data stream.
      */
     public static CodeGenerator get(BackendKind backend, OutputStream out, int indent, int size)  throws IOException {
-        switch(backend) {
-            case LVM:
-                return new LVMCodeGenerator(out, indent, size);
+        return switch(backend) {
+            case LVM -> new LVMCodeGenerator(out, indent, size);
                 
-            case X86:
-                return new X86CodeGenerator(out, indent, size);
-                
-            case WASM:
-                return new X86CodeGenerator(out, indent, size); 
-                
-            default:
-                assert false: "Unknown backend kind";            
-        }
-        
-        return null;
+            case X86 -> new X86CodeGenerator(out, indent, size);
+
+            case WASM -> new X86CodeGenerator(out, indent, size); 
+        };
     }
     
 }
