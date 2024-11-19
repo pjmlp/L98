@@ -29,7 +29,7 @@ public final class CodeGeneratorFactory {
     /**
      * Available set of backends.
      */
-    public enum BackendKind { LVM, X86, WASM }
+    public enum BackendKind { LVM, X86 }
     
     /**
      * Retrieves the desired backend.
@@ -46,8 +46,6 @@ public final class CodeGeneratorFactory {
             case LVM -> new LVMCodeGenerator(out, indent, size);
                 
             case X86 -> new X86CodeGenerator(out, indent, size);
-
-            case WASM -> new X86CodeGenerator(out, indent, size); 
         };
     }
     
