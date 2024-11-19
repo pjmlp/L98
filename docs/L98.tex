@@ -647,12 +647,12 @@ allocation related operations.
   \hline
   OpCode & Description\\
   \hline\hline
-  LOAD & n \arrow{} [SP], SP + 1 \arrow{} SP\\ 
+  LOAD n & n \arrow{} [SP], SP + 1 \arrow{} SP\\ 
   LOADVAR l, i & A[l][i] \arrow{} [SP], SP + 1 \arrow{} SP\\
   STOREVAR l, i & SP - 1 \arrow{} SP, [SP] \arrow{} A[l][i]\\
   LOADGLOBAL i & M[i] \arrow{} [SP], SP + 1 \arrow{} SP\\
   STOREGLOBAL i &  SP - 1 \arrow{} SP, [SP] \arrow{} M[i]\\
-  LOADVARA i,l & \&A[l][i] \arrow{} [SP], SP + 1 \arrow{} SP\\
+  LOADVARA l, i & \&A[l][i] \arrow{} [SP], SP + 1 \arrow{} SP\\
   LOADGLOBALA i & \&M[i] \arrow{} [SP], SP + 1 \arrow{} SP\\
   LOADIND & [SP - 1] \arrow{} M, [M] \arrow{} [SP - 1]\\
   STOREIND & [SP - 1] \arrow{} M, SP - 1 \arrow{} SP, [SP - 1] \arrow{} V, SP- 1 \arrow{} SP, V \arrow{} [M]\\
